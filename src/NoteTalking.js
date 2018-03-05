@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import logo from './logo.svg';
-import './App.css';
 
 import TestComponent from './TestComponent'
 import GoldenLayout from 'golden-layout'
 
-class App extends Component {
+class NoteTaking extends Component {
 
   componentDidMount() {
 
-    // let container = this.domNode;
-
+    let container = this.domNode;
     const config = {
       content: [{
         type: 'row',
@@ -35,10 +32,8 @@ class App extends Component {
     };
 
     setTimeout(() => {
-      // const layout = new GoldenLayout(config, container);    
-      const layout = new GoldenLayout(config);    
+      const layout = new GoldenLayout(config, container);    
       layout.registerComponent( 'test-component', TestComponent );
-      
       //Once all components are registered, call
       layout.init();
     }, 0);
@@ -50,4 +45,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default NoteTaking;
