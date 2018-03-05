@@ -30,14 +30,11 @@ class NoteTaking extends Component {
       }]
     };
 
-    setTimeout(() => {
-      const layout = new GoldenLayout(config);    
-      layout.registerComponent( 'test-component', TestComponent );
-      //Once all components are registered, call
-      layout.init();
-    }, 0);
+    const layout = new GoldenLayout(config);    
+    layout.registerComponent( 'test-component', TestComponent );
+    //Once all components are registered, call
+    layout.init();
   }
-
 
   render() {
     return <div ref={ref => (this.domNode = ref)} />
