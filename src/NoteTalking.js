@@ -8,7 +8,6 @@ class NoteTaking extends Component {
 
   componentDidMount() {
 
-    let container = this.domNode;
     const config = {
       content: [{
         type: 'row',
@@ -32,7 +31,7 @@ class NoteTaking extends Component {
     };
 
     setTimeout(() => {
-      const layout = new GoldenLayout(config, container);    
+      const layout = new GoldenLayout(config);    
       layout.registerComponent( 'test-component', TestComponent );
       //Once all components are registered, call
       layout.init();
