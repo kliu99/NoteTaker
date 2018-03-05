@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
 
-import NoteTaking from './NoteTalking';
+import NoteTaking from './NoteTaking';
 
 class App extends Component {
   render() {
