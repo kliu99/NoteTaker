@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-
-import TestComponent from './TestComponent'
 import GoldenLayout from 'golden-layout'
 import UserList from './UserList';
 import UserDetail from './UserDetail';
@@ -47,20 +45,23 @@ class NoteTaking extends Component {
       }]
     }
 
-    const layout = new GoldenLayout(config);    
+    // https://github.com/WolframHempel/golden-layout/pull/348
+    setTimeout(() => {
+      const layout = new GoldenLayout(config);    
     
-    layout.registerComponent('user-list', UserList);
-    layout.registerComponent('user-detail', UserDetail);
+      layout.registerComponent('user-list', UserList);
+      layout.registerComponent('user-detail', UserDetail);
     
-    // layout.registerComponent( 'test-component', TestComponent );
+      //Once all components are registered, call
+      layout.init();
 
-
-    //Once all components are registered, call
-    layout.init();
+      // Emit event to all the components
+      layout.eventHub.emit( "video-changed", this.props.match.params.id )
+    }, 0);
   }
 
   render() {
-    return <div ref={ref => (this.domNode = ref)} />
+    return <div ref={ref => (this.domNode = ref)} />;
   }
 }
 
