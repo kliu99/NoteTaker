@@ -3,12 +3,13 @@ import Player from 'react-player'
 
 import './Video.css'
 import User from './User'
-import Duration from './Duration'
+import Duration from './components/Duration'
 
 class Video extends Component {
 
     constructor(props) {
         super(props)
+
         // Initial state
         this.state = {
             url: null,
@@ -23,11 +24,16 @@ class Video extends Component {
             duration: 0,
             config: {
                 youtube: {
-                    playerVars: { showinfo: 0 }
+                    playerVars: {
+                        controls: 1,
+                        showinfo: 0,
+                        rel: 0,
+                        modestbranding: 0,
+                        autoplay: 1
+                    }
                 }
             }
         };
-
         this.videoChanged = this.videoChanged.bind(this);
     }
 
@@ -63,6 +69,11 @@ class Video extends Component {
         this.setState({ url: null, playing: false })
     }
 
+    onReady = () => {
+        console.log('onReady');
+        this.playerMounted();
+    }
+
     onPlay = () => {
         console.log('onPlay')
         this.setState({ playing: true })
@@ -85,6 +96,10 @@ class Video extends Component {
         }
     }
 
+    ref = (player) => {
+        this.player = player;
+    }
+
     render() {
         const eventHub = this.props.glEventHub;
         const { url, playing, loop, controls, volume, muted, playbackRate, played, loaded, duration, config } = this.state
@@ -100,9 +115,8 @@ class Video extends Component {
                     })}
                 </ul> */}
 
-
                 <Player
-                    ref={player => (this.player = player)}
+                    ref={this.ref}
                     // width='100%'
                     // height='100%'
                     url={url}
@@ -113,10 +127,7 @@ class Video extends Component {
                     volume={volume}
                     muted={muted}
                     config={config}
-                    onReady={() => {
-                        console.log('onReady');
-                        this.playerMounted();
-                    }}
+                    onReady={this.onReady}
                     onStart={() => console.log('onStart')}
                     onPlay={this.onPlay}
                     onPause={this.onPause}
