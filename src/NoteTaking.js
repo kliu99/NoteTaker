@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import GoldenLayout from 'golden-layout'
 import Video from './Video';
-import UserDetail from './UserDetail';
+import Note from './Note';
 
 class NoteTaking extends Component {
 
@@ -17,7 +17,7 @@ class NoteTaking extends Component {
         }, {
           title: 'Note',
           type: 'react-component',
-          component: 'user-detail'
+          component: 'note'
         }]
       }]
     }
@@ -27,7 +27,7 @@ class NoteTaking extends Component {
       const layout = new GoldenLayout(config);
 
       layout.registerComponent('video', Video);
-      layout.registerComponent('user-detail', UserDetail);
+      layout.registerComponent('note', Note);
 
       //Once all components are registered, call
       layout.init();

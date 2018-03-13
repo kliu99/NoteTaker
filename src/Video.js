@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Player from 'react-player'
 
 import './Video.css'
-import User from './User'
 import Duration from './components/Duration'
 
 class Video extends Component {
@@ -101,7 +100,6 @@ class Video extends Component {
     }
 
     render() {
-        const eventHub = this.props.glEventHub;
         const { url, playing, loop, controls, volume, muted, playbackRate, played, loaded, duration, config } = this.state
 
         return (
