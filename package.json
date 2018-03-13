@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "golden-layout": "^1.5.9",
+    "immutable": "^3.8.2",
     "jquery": "^3.3.1",
     "react": "^16.2.0",
     "react-app-rewire-hot-loader": "^1.0.0",
@@ -11,7 +12,9 @@
     "react-hot-loader": "^4.0.0",
     "react-player": "^1.2.1",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "slate": "^0.33.0",
+    "slate-react": "^0.12.0"
   },
   "scripts": {
     "start": "react-app-rewired start",

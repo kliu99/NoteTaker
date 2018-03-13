@@ -1,0 +1,132 @@
+html,
+input,
+textarea {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.4;
+  background: #eee;
+}
+
+body {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+pre {
+  padding: 10px;
+  background-color: #eee;
+  white-space: pre-wrap;
+}
+
+:not(pre) > code {
+  font-family: monospace;
+  background-color: #eee;
+  padding: 3px;
+}
+
+img {
+  max-width: 100%;
+  max-height: 20em;
+}
+
+img.active {
+  box-shadow: 0 0 0 2px blue;
+}
+
+blockquote {
+  border-left: 2px solid #ddd;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 10px;
+  color: #aaa;
+  font-style: italic;
+}
+
+blockquote[dir='rtl'] {
+  border-left: none;
+  padding-left: 0;
+  padding-right: 10px;
+  border-right: 2px solid #ddd;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  padding: 10px;
+  border: 2px solid #ddd;
+}
+
+input {
+  box-sizing: border-box;
+  font-size: 0.85em;
+  width: 100%;
+  padding: 0.5em;
+  border: 2px solid #ddd;
+  background: #fafafa;
+}
+
+input:focus {
+  outline: 0;
+  border-color: blue;
+}
+
+/**
+ * Icons.
+ */
+
+.material-icons {
+  font-size: 18px;
+  vertical-align: text-bottom;
+}
+
+/**
+ * Editor.
+ */
+.editor > * > * + * {
+    margin-top: 1em;
+  }
+  
+  .menu > * {
+    display: inline-block;
+  }
+  
+  .menu > * + * {
+    margin-left: 15px;
+  }
+  
+  .button {
+    color: #ccc;
+    cursor: pointer;
+  }
+  
+  .button[data-active='true'] {
+    color: black;
+  }
+  
+  .toolbar-menu {
+    position: relative;
+    padding: 1px 18px 17px;
+    margin: 0 -20px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 20px;
+  }
+  
+  .toolbar-menu .search {
+    position: relative;
+  }
+  
+  .toolbar-menu .search-icon {
+    position: absolute;
+    top: 0.5em;
+    left: 0.5em;
+    color: #ccc;
+  }
+  
+  .toolbar-menu .search-box {
+    padding-left: 2em;
+    width: 100%;
+  }

@@ -1,6 +1,33 @@
 import React, { Component } from 'react';
-import NoteEntry from './NoteEntry';
+import { Editor } from 'slate-react'
+import { Value } from 'slate'
 
+import './Note.css';
+import NoteEntry from './NoteEntry';
+import RichText from './components/RichText';
+
+// const editorInitialValue = Value.fromJSON({
+//     document: {
+//       nodes: [
+//         {
+//           object: 'block',
+//           type: 'paragraph',
+//           nodes: [
+//             {
+//               object: 'text',
+//               leaves: [
+//                 {
+//                   text: 'A line of text in a paragraph.',
+//                 },
+//               ],
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//   })
+
+  
 class Note extends Component {
 
     constructor(props) {
@@ -19,8 +46,6 @@ class Note extends Component {
 
         this.setUser = this.setUser.bind(this);
         this.setPlayer = this.setPlayer.bind(this);
-
-
     }
 
     componentWillMount() {
@@ -63,6 +88,9 @@ class Note extends Component {
 
 
                 {this.state.player.getCurrentTime()}
+
+                <RichText />
+
             </div>
         )
 
