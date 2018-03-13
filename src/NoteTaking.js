@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import GoldenLayout from 'golden-layout'
 import Video from './Video';
 import Note from './Note';
+import './NoteTaking.css';
 
 class NoteTaking extends Component {
 

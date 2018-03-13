@@ -89,7 +89,6 @@ class Video extends Component {
     }
 
     onProgress = state => {
-        // We only want to update time slider if we are not currently seeking
         if (!this.state.seeking) {
             this.setState(state)
         }
@@ -103,20 +102,12 @@ class Video extends Component {
         const { url, playing, loop, controls, volume, muted, playbackRate, played, loaded, duration, config } = this.state
 
         return (
-            <div>
-                {/* <ul className="userlist">
-                    {this.state.users.map(function (user) {
-                        return <User
-                            key={user.name}
-                            userData={user}
-                            glEventHub={eventHub} />
-                    })}
-                </ul> */}
-
+            <div className="panel">
+                <div className="wrapper">
                 <Player
                     ref={this.ref}
-                    // width='100%'
-                    // height='100%'
+                    width='100%'
+                    height='100%'
                     url={url}
                     playing={playing}
                     controls={controls}
@@ -135,10 +126,11 @@ class Video extends Component {
                     onError={e => console.log('onError', e)}
                     onProgress={this.onProgress}
                     onDuration={this.onDuration}
+                    className="player"
                 />
+                </div>
 
-                <h2>State</h2>
-
+                <br/>
                 <table><tbody>
                     <tr>
                         <th>url</th>
@@ -175,7 +167,6 @@ class Video extends Component {
                         <td><Duration seconds={duration * (1 - played)} /></td>
                     </tr>
                 </tbody></table>
-
             </div>
         );
     }

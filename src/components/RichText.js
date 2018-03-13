@@ -17,10 +17,18 @@ class MarkdownShortcuts extends React.Component {
    * @type {Object}
    */
 
-  state = {
-    value: Value.fromJSON(initialValue),
+  constructor(props) {
+    super(props)
+    if (this.props.value) {
+      this.state = { 
+        value: Value.fromJSON(this.props.value)
+      }
+    } else {
+      this.state = {
+        value: Value.fromJSON(initialValue),
+      }
+    }
   }
-
   /**
    * Get the block type for a series of auto-markdown shortcut `chars`.
    *
@@ -50,6 +58,8 @@ class MarkdownShortcuts extends React.Component {
         return 'heading-five'
       case '######':
         return 'heading-six'
+      case '`':
+        return 'code'
       default:
         return null
     }
@@ -66,11 +76,13 @@ class MarkdownShortcuts extends React.Component {
     return (
       <div className="editor">
         <Editor
+          readOnly={this.props.readOnly}
           placeholder="Write some markdown..."
           value={this.state.value}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           renderNode={this.renderNode}
+          onClick={this.onClick}
         />
       </div>
     )
@@ -166,7 +178,7 @@ class MarkdownShortcuts extends React.Component {
     change.setBlocks(type)
 
     if (type == 'unordered-item') {
-        change.wrapBlock('bulleted-list')
+      change.wrapBlock('bulleted-list')
     }
 
     if (type == 'ordered-item') {
@@ -249,6 +261,24 @@ class MarkdownShortcuts extends React.Component {
     const { value } = change
     if (value.isExpanded) return
 
+    const { startBlock, startOffset } = value
+
+    // change.insertBlock('code')
+    // change.insertInline('code')
+    // change.setBlocks('code')
+    // change.wrapInline('code')
+
+    // change.insertInline
+    // change.setInlines('code')
+    // change.splitInline().setInlines('code')
+
+    // change.addMark('code')
+
+    return true
+  }
+
+  onClick = () => {
+    // console.log("clicked");
   }
 }
 
