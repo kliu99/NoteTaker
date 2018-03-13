@@ -5,7 +5,6 @@ import { Value } from 'slate'
 import './Note.css';
 import NoteEntry from './NoteEntry';
 import RichText from './components/RichText';
-import MarkdownPreview from './components/MarkdownPreview';
 
 class Note extends Component {
 
