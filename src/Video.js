@@ -44,12 +44,8 @@ class Video extends Component {
         this.props.glEventHub.off('video-changed', this.videoChanged);
     }
 
-    playerMounted() {
-        this.props.glEventHub.emit('player-mount', this.player);
-    }
-
     videoChanged(vid) {
-        this.load(`https://www.youtube.com/watch?v=${vid}`)
+        this.load(`https://www.youtube.com/watch?v=${vid}`);
     }
 
     load(src) {
@@ -70,7 +66,7 @@ class Video extends Component {
 
     onReady = () => {
         console.log('onReady');
-        this.playerMounted();
+        this.props.glEventHub.emit('set-player', this.player);
     }
 
     onPlay = () => {
@@ -84,7 +80,7 @@ class Video extends Component {
     }
 
     onDuration = (duration) => {
-        console.log('onDuration', duration)
+        console.log('onDuration')
         this.setState({ duration })
     }
 
@@ -104,6 +100,9 @@ class Video extends Component {
         return (
             <div className="panel">
                 <div className="wrapper">
+
+                {/* iframe reload after layout changed */}
+                {/* https://github.com/WolframHempel/golden-layout/issues/154 */}
                 <Player
                     ref={this.ref}
                     width='100%'

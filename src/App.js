@@ -14,11 +14,6 @@ class App extends Component {
         <div className="App">
           <Route exact path="/" component={Home} />
           <Route path="/v/:id" component={NoteTaking} />
-
-          {/* <NoteTaking /> */}
-          {/* <p className="App-intro">
-        To get started, edit <code>src/App.js</code> and save to reload.
-      </p> */}
         </div>
       </Router>
     )

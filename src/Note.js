@@ -13,6 +13,7 @@ class Note extends Component {
 
         this.state = {
             playerTime: "00:00",
+            player: null,
             notes: [{
                 time: "00:01",
                 content: {
@@ -60,27 +61,24 @@ class Note extends Component {
                 }
             }]
         }
-
-        this.setPlayer = this.setPlayer.bind(this);
-        this.updateTimer = this.updateTimer.bind(this);
     }
 
     componentWillMount() {
-        this.props.glEventHub.on('player-mount', this.setPlayer);
+        this.props.glEventHub.on('set-player', this.setPlayer);
     }
 
     componentWillUnmount() {
-        this.props.glEventHub.off('player-mount', this.setPlayer);
+        this.props.glEventHub.off('set-player', this.setPlayer);
     }
 
-    setPlayer(player) {
-        this.setState( { player: player } );
-        console.log(this.state);
-    }
-
-    updateTimer() {
-        console.log("hihi");
-        this.setState( { playerTime: this.state.player.getCurrentTime()} );
+    setPlayer = (player) => {
+        console.log('set player recieved: ', player)
+        if (!this.state.player) {
+            console.log(this.state);
+            console.log('player set');
+            this.setState( { player: player } );
+            console.log(this.state);
+        }
     }
 
     render() {
@@ -102,10 +100,9 @@ class Note extends Component {
                 </div>
 
                 <div className="card">
-                    <div class="container">
+                    <div className="container">
                         <div className="time">{this.state.playerTime}</div>
-                        <RichText readOnly={false} onClick={this.updateTimer} />
-                        {/* <MarkdownPreview /> */}
+                        <RichText readOnly={false} />
                     </div>
                 </div>
             </div>

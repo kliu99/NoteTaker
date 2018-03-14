@@ -1,0 +1,21 @@
+{
+    "content": [
+        {
+            "type": "row",
+            "content": [
+                {
+                    "title": "Video",
+                    "type": "react-component",
+                    "component": "video",
+                    "isClosable": false
+                },
+                {
+                    "title": "Note",
+                    "type": "react-component",
+                    "component": "note",
+                    "isClosable": false
+                }
+            ]
+        }
+    ]
+}
