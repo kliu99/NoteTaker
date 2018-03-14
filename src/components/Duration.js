@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 
 class Duration extends Component {
+
+  constructor(props) {
+    super(props);
+
+    
+  }
+
   format(seconds) {
     const date = new Date(seconds * 1000)
     const hh = date.getUTCHours()
@@ -18,7 +25,7 @@ class Duration extends Component {
 
   render() {
     return (
-      <time dateTime={`P${Math.round(this.props.seconds)}S`} className={this.props.className}>
+      <time dateTime={`P${Math.round(this.props.seconds)}S`} className={this.props.className} onClick={this.props.onClick}>
         {this.format(this.props.seconds)}
       </time>
     );

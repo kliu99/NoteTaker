@@ -5,6 +5,7 @@ import { Value } from 'slate'
 import './Note.css';
 import NoteEntry from './NoteEntry';
 import RichText from './components/RichText';
+import Duration from './components/Duration';
 
 class Note extends Component {
 
@@ -12,10 +13,10 @@ class Note extends Component {
         super(props);
 
         this.state = {
-            playerTime: "00:00",
+            playerTime: 0,
             player: null,
             notes: [{
-                time: "00:01",
+                time: 12,
                 content: {
                     "document": {
                         "nodes": [
@@ -38,7 +39,7 @@ class Note extends Component {
                     }
                 }
             }, {
-                time: "00:04",
+                time: 98,
                 content: {
                     "document": {
                         "nodes": [
@@ -81,6 +82,10 @@ class Note extends Component {
         }
     }
 
+    getPlayerTime = () => {
+        this.setState( {playerTime: this.state.player.getCurrentTime()} )
+    }
+
     render() {
         if (!this.state || !this.state.player) {
             return (<div>Waiting for Player to load</div>)
@@ -94,17 +99,25 @@ class Note extends Component {
                         return <NoteEntry
                             key={id}
                             readOnly={true}
-                            value={note}
+                            time={note.time}
+                            content={note.content}
+                            player={this.state.player}
                             glEventHub={eventHub} />
                     })}
+
+                    <NoteEntry readOnly={false} time={this.state.playerTime} />
                 </div>
 
-                <div className="card">
+                {/* <div className="card">
                     <div className="container">
-                        <div className="time">{this.state.playerTime}</div>
+                        <div className="note-toolbar">
+                            <Duration className="time" seconds={this.state.playerTime} />
+                        </div>
                         <RichText readOnly={false} />
                     </div>
-                </div>
+                </div> */}
+
+                <button onClick={this.getPlayerTime}>Get Time</button>
             </div>
         )
     }

@@ -80,6 +80,7 @@ input:focus {
 
 .editor {
     margin: 1em;
+    margin-top: 1.5em;
 }
 
 .editor > * > * + * {
@@ -104,6 +105,11 @@ input:focus {
     padding: 2px 16px;
 }
 
-.time {
-    text-align: right;
+.note-toolbar {
+    /* text-align: right; */
+    float: right;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
