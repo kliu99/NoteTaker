@@ -2,62 +2,32 @@ import React, { Component } from 'react';
 
 import './Note.css';
 import NoteEntry from './NoteEntry';
+import { debounce } from './components/utils';
 
 class Note extends Component {
 
     constructor(props) {
         super(props);
 
+        const storageKey = `v/${this.props.id}`;
+
+        let notes = localStorage.getItem(storageKey);
+        if (notes) {
+            notes = JSON.parse(notes);
+        } else {
+            notes = [];
+        }
+
         this.state = {
             playerTime: 0,
             player: null,
-            notes: [{
-                time: 12,
-                content: {
-                    "document": {
-                        "nodes": [
-                            {
-                                "object": "block",
-                                "type": "paragraph",
-                                "nodes": [
-                                    {
-                                        "object": "text",
-                                        "leaves": [
-                                            {
-                                                "text":
-                                                    "The editor gives you full control over the logic you can add. For example, it's fairly common to want to add markdown-like shortcuts to editors. So that, when you start a line with \"> \" you get a blockquote that looks like this:"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                }
-            }, {
-                time: 98,
-                content: {
-                    "document": {
-                        "nodes": [
-                            {
-                                "object": "block",
-                                "type": "block-quote",
-                                "nodes": [
-                                    {
-                                        "object": "text",
-                                        "leaves": [
-                                            {
-                                                "text": "A wise quote."
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                }
-            }]
+            notes: notes,
+            newIdx: notes.length,
+            storageKey: storageKey
         }
+
+        this.addNote = this.addNote.bind(this);
+        this.onNoteChange = this.onNoteChange.bind(this);
     }
 
     componentWillMount() {
@@ -70,12 +40,29 @@ class Note extends Component {
 
     setPlayer = (player) => {
         console.log("here");
-        // this.state.player = player;
-        // this.setState( { player: player } );
+        this.setState( { player: player } );
     }
 
     getPlayerTime = () => {
         this.setState( {playerTime: this.state.player.getCurrentTime()} )
+    }
+
+    addNote() {
+        console.log('addNote')
+        console.log(this.refs.noteEditor)
+    }
+
+    onNoteChange(content) {
+        this.state.notes[this.state.newIdx] = {
+            "time": this.state.playerTime,
+            "content": content
+        }
+
+        localStorage.setItem(this.state.storageKey, JSON.stringify(this.state.notes))
+    }
+
+    emptyStorage = () => {
+        localStorage.removeItem(this.state.storageKey);
     }
 
     render() {
@@ -96,10 +83,14 @@ class Note extends Component {
                             player={this.state.player}
                             glEventHub={eventHub} />
                     })}
-
-                    <NoteEntry readOnly={false} time={this.state.playerTime} />
                 </div>
 
+                <div className="notelist">
+                    <NoteEntry ref="noteEditor" readOnly={false} time={this.state.playerTime} onChange={debounce(this.onNoteChange, 250)}/>
+                    <button onClick={this.getPlayerTime}>Get Time</button>
+                    <button onClick={this.addNote}>Add Note</button>
+                    <button onClick={this.emptyStorage}>Empty Storage</button>
+                </div>
                 {/* <div className="card">
                     <div className="container">
                         <div className="note-toolbar">
@@ -109,7 +100,7 @@ class Note extends Component {
                     </div>
                 </div> */}
 
-                <button onClick={this.getPlayerTime}>Get Time</button>
+                
             </div>
         )
     }

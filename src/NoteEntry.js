@@ -4,12 +4,7 @@ import RichText from './components/RichText';
 import Duration from './components/Duration';
 
 class NoteEntry extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = this.props.data;
-    }
-
+    
     seekTo = () => {
         if (this.props.time) {
             this.props.player.seekTo(this.props.time);
@@ -29,7 +24,8 @@ class NoteEntry extends Component {
                         key={this.props.key}
                         readOnly={this.props.readOnly}
                         value={this.props.content}
-                        glEventHub={this.props.glEventHub} />
+                        glEventHub={this.props.glEventHub}
+                        onChange={this.props.onChange} />
                 </div>
             </div>
         );

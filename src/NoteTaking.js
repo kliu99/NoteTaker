@@ -4,61 +4,51 @@ import GoldenLayout from 'golden-layout'
 import Video from './Video';
 import Note from './Note';
 import './NoteTaking.css';
-import defaultConfig from './components/defaultLayoutConfig.json'
-
-
-
-// function debounce(fn, delay) {
-//   var timer = null;
-//   return function () {
-//     var context = this, args = arguments;
-//     clearTimeout(timer);
-//     timer = setTimeout(function () {
-//       fn.apply(context, args);
-//     }, delay);
-//   };
-// }
-
-function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
-};
-
 
 class NoteTaking extends Component {
 
   constructor(props) {
     super(props);
 
-    let layoutConfig = localStorage.getItem(`v/${this.props.match.params.id}`);
-    if (!layoutConfig) {
-      layoutConfig = JSON.stringify(defaultConfig);
-    }
-
-    this.state = {
-      layoutConfig: layoutConfig
-    }
+    // let layoutConfig = localStorage.getItem(`v/${this.props.match.params.id}`);
   }
 
   componentDidMount() {
-    window.addEventListener('storage', (e) => {  
-      console.log('storage', e);
-    });
+    const layoutConfig = {
+      "settings": {
+        "showCloseIcon": false
+      },
+      "content": [
+        {
+          "type": "row",
+          "content": [
+            {
+              "title": "Video",
+              "type": "react-component",
+              "component": "video",
+              "isClosable": false,
+              "props": {
+                "id": this.props.match.params.id
+              }
+            },
+            {
+              "title": "Note",
+              "type": "react-component",
+              "component": "note",
+              "isClosable": false,
+              "props": {
+                "id": this.props.match.params.id
+              }
+            }
+          ]
+        }
+      ]
+    }
 
 
     // https://github.com/WolframHempel/golden-layout/pull/348
     setTimeout(() => {
-      const layout = new GoldenLayout(JSON.parse(this.state.layoutConfig));
+      const layout = new GoldenLayout(layoutConfig);
       this.setState({ layout: layout })
 
       layout.registerComponent('video', Video);
@@ -72,8 +62,9 @@ class NoteTaking extends Component {
 
       // Save layout to local storage
       // layout.on('stateChanged', debounce(this.stateChanged, 200));
-      layout.on('stateChanged', debounce(this.stateChanged, 2000));
+      // layout.on('stateChanged', debounce(this.stateChanged, 0));
 
+      // When item is destroyed
       layout.on('itemDestroyed', (e) => {
         // Bug in GL: stack overflow when component has complex object.
         if (e.config.type === "component" && e.config.component === "note") {
@@ -83,35 +74,35 @@ class NoteTaking extends Component {
     }, 0);
   }
 
-  stateChanged = (e) => {
-    console.log(e);
-    console.log("stateChanged");
+  // stateChanged(e) {
+  //   console.log(e);
+  //   console.log("stateChanged");
 
-    try {
-      const layoutConfig = JSON.stringify(this.state.layout.toConfig(), (key, value) => {
-        if (key == "player")
-          return null;
-        else
-          return value;
-      })
-  
-      console.log(JSON.parse(layoutConfig));
-      localStorage.setItem(`v/${this.props.match.params.id}`, layoutConfig);
-      console.log(JSON.parse(localStorage.getItem(`v/${this.props.match.params.id}`)))
+  //   try {
+  //     const layoutConfig = JSON.stringify(this.state.layout.toConfig(), (key, value) => {
+  //       if (key == "player")
+  //         return null;
+  //       else
+  //         return value;
+  //     })
 
-    } catch (error) {
-      console.log(error);
-    }
+  //     console.log(JSON.parse(layoutConfig));
+  //     localStorage.setItem(`v/${this.props.match.params.id}`, layoutConfig);
 
-    // if(!this.state.layout.isInitialised || !(this.state.layout.openPopouts.every((popout) => popout.isInitialised))) { 
-    //   console.log("returned");
-    //   return;
-    // }
+  //     console.log(JSON.parse(layoutConfig));
+  //     console.log(JSON.parse(localStorage.getItem(`v/${this.props.match.params.id}`)))
 
-    
+  //   } catch (error) {
+  //     console.log(error);
+  //     // retry in a second
+  //     setTimeout(this.stateChanged, 1000);
+  //   }
 
-    
-  }
+  //   // if(!this.state.layout.isInitialised || !(this.state.layout.openPopouts.every((popout) => popout.isInitialised))) { 
+  //   //   console.log("returned");
+  //   //   return;
+  //   // }    
+  // }
 
   render() {
     return <div />;

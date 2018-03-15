@@ -10,7 +10,7 @@ import initialValue from './value.json'
  * @type {Component}
  */
 
-class MarkdownShortcuts extends React.Component {
+class RichText extends React.Component {
   /**
    * Deserialize the raw initial value.
    *
@@ -131,6 +131,11 @@ class MarkdownShortcuts extends React.Component {
    */
 
   onChange = ({ value }) => {
+    // Check to see if the document has changed before saving.
+    if (this.props.onChange && value.document != this.state.value.document) {
+      this.props.onChange(value);
+    }
+
     this.setState({ value })
   }
 
@@ -286,4 +291,4 @@ class MarkdownShortcuts extends React.Component {
  * Export.
  */
 
-export default MarkdownShortcuts
+export default RichText
