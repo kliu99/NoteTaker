@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { Editor } from 'slate-react'
-import { Value } from 'slate'
 
 import './Note.css';
 import NoteEntry from './NoteEntry';
-import RichText from './components/RichText';
-import Duration from './components/Duration';
 
 class Note extends Component {
 
@@ -73,13 +69,9 @@ class Note extends Component {
     }
 
     setPlayer = (player) => {
-        console.log('set player recieved: ', player)
-        if (!this.state.player) {
-            console.log(this.state);
-            console.log('player set');
-            this.setState( { player: player } );
-            console.log(this.state);
-        }
+        console.log("here");
+        // this.state.player = player;
+        // this.setState( { player: player } );
     }
 
     getPlayerTime = () => {

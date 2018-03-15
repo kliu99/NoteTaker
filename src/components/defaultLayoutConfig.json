@@ -1,4 +1,7 @@
 {
+    "settings": {
+        "showCloseIcon": false
+    },
     "content": [
         {
             "type": "row",

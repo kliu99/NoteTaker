@@ -1,13 +1,6 @@
 import React, { Component } from 'react'
 
 class Duration extends Component {
-
-  constructor(props) {
-    super(props);
-
-    
-  }
-
   format(seconds) {
     const date = new Date(seconds * 1000)
     const hh = date.getUTCHours()
