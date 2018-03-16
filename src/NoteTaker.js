@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import GoldenLayout from 'golden-layout'
 
+import './NoteTaker.css';
 import Video from './Video';
-import Note from './Note';
-import './NoteTaking.css';
+import NoteList from './NoteList';
+import NewNote from './NewNote';
 
-class NoteTaking extends Component {
-
-  constructor(props) {
-    super(props);
-
-    // let layoutConfig = localStorage.getItem(`v/${this.props.match.params.id}`);
-  }
+class NoteTaker extends Component {
 
   componentDidMount() {
     const layoutConfig = {
@@ -32,13 +27,27 @@ class NoteTaking extends Component {
               }
             },
             {
-              "title": "Note",
-              "type": "react-component",
-              "component": "note",
-              "isClosable": false,
-              "props": {
-                "id": this.props.match.params.id
-              }
+              "type": "column",
+              "content": [
+                {
+                  "title": "Note List",
+                  "type": "react-component",
+                  "component": "note-list",
+                  "isClosable": false,
+                  "props": {
+                    "id": this.props.match.params.id
+                  }
+                },
+                {
+                  "title": "New Note",
+                  "type": "react-component",
+                  "component": "new-note",
+                  "isClosable": false,
+                  "props": {
+                    "id": this.props.match.params.id
+                  }
+                }
+              ]
             }
           ]
         }
@@ -52,7 +61,8 @@ class NoteTaking extends Component {
       this.setState({ layout: layout })
 
       layout.registerComponent('video', Video);
-      layout.registerComponent('note', Note);
+      layout.registerComponent('note-list', NoteList);
+      layout.registerComponent('new-note', NewNote);
 
       //Once all components are registered, call
       layout.init();
@@ -67,7 +77,8 @@ class NoteTaking extends Component {
       // When item is destroyed
       layout.on('itemDestroyed', (e) => {
         // Bug in GL: stack overflow when component has complex object.
-        if (e.config.type === "component" && e.config.component === "note") {
+        if (e.config.type === "component" &&
+          (e.config.component === "note-list" || e.config.component === "new-note")) {
           e.container.extendState({ player: null })
         }
       })
@@ -109,4 +120,4 @@ class NoteTaking extends Component {
   }
 }
 
-export default NoteTaking;
+export default NoteTaker;

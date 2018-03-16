@@ -1,68 +1,48 @@
 import React, { Component } from 'react';
 
-import './Note.css';
+import './NoteList.css';
 import NoteEntry from './NoteEntry';
-import { debounce } from './components/utils';
 
-class Note extends Component {
+class NoteList extends Component {
 
     constructor(props) {
         super(props);
 
-        const storageKey = `v/${this.props.id}`;
-
-        let notes = localStorage.getItem(storageKey);
-        if (notes) {
-            notes = JSON.parse(notes);
-        } else {
-            notes = [];
-        }
-
         this.state = {
             playerTime: 0,
             player: null,
-            notes: notes,
-            newIdx: notes.length,
-            storageKey: storageKey
+            notes: [],
+            storageKey: `v/${this.props.id}`
         }
-
-        this.addNote = this.addNote.bind(this);
-        this.onNoteChange = this.onNoteChange.bind(this);
     }
 
     componentWillMount() {
         this.props.glEventHub.on('set-player', this.setPlayer);
+        this.props.glEventHub.on('add-note', this.addNote);
+        // Retrieve notes from localStorage
+        let notes = localStorage.getItem(this.state.storageKey);
+        if (notes) {
+            this.setState( { notes: JSON.parse(notes) } );
+        }
     }
 
     componentWillUnmount() {
         this.props.glEventHub.off('set-player', this.setPlayer);
+        this.props.glEventHub.off('add-note', this.addNote);
     }
 
+    // Set video player
     setPlayer = (player) => {
-        console.log("here");
         this.setState( { player: player } );
     }
 
-    getPlayerTime = () => {
-        this.setState( {playerTime: this.state.player.getCurrentTime()} )
-    }
-
-    addNote() {
-        console.log('addNote')
-        console.log(this.refs.noteEditor)
-    }
-
-    onNoteChange(content) {
-        this.state.notes[this.state.newIdx] = {
-            "time": this.state.playerTime,
-            "content": content
-        }
-
-        localStorage.setItem(this.state.storageKey, JSON.stringify(this.state.notes))
-    }
-
-    emptyStorage = () => {
-        localStorage.removeItem(this.state.storageKey);
+    addNote = (note) => {
+        this.setState(prevState => ({
+            notes: prevState.notes.concat(note)
+        }), () => {
+            // Save notes to localStorage
+            localStorage.setItem(this.state.storageKey, JSON.stringify(this.state.notes));    
+        });
     }
 
     render() {
@@ -85,12 +65,7 @@ class Note extends Component {
                     })}
                 </div>
 
-                <div className="notelist">
-                    <NoteEntry ref="noteEditor" readOnly={false} time={this.state.playerTime} onChange={debounce(this.onNoteChange, 250)}/>
-                    <button onClick={this.getPlayerTime}>Get Time</button>
-                    <button onClick={this.addNote}>Add Note</button>
-                    <button onClick={this.emptyStorage}>Empty Storage</button>
-                </div>
+                
                 {/* <div className="card">
                     <div className="container">
                         <div className="note-toolbar">
@@ -106,4 +81,4 @@ class Note extends Component {
     }
 }
 
-export default Note;
+export default NoteList;

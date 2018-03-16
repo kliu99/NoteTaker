@@ -4,7 +4,7 @@ import { HashRouter as Router, Route } from 'react-router-dom'
 
 import './App.css';
 
-import NoteTaking from './NoteTaking';
+import NoteTaker from './NoteTaker';
 import Home from './Home';
 
 class App extends Component {
@@ -13,7 +13,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Route exact path="/" component={Home} />
-          <Route path="/v/:id" component={NoteTaking} />
+          <Route path="/v/:id" component={NoteTaker} />
         </div>
       </Router>
     )
