@@ -85,6 +85,10 @@ class NoteTaker extends Component {
     }, 0);
   }
 
+  componentWillUnmount() {
+    this.state.layout.destroy()
+  }
+
   // stateChanged(e) {
   //   console.log(e);
   //   console.log("stateChanged");
