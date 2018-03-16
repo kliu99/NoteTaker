@@ -30,7 +30,11 @@ class RichText extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.value != nextProps.value) {
+    if (!nextProps.value) {
+      this.setState({
+        value: Value.fromJSON(initialValue)
+      })
+    } else if (this.props.value != nextProps.value) {
       this.setState({
         value: Value.fromJSON(nextProps.value)
       })

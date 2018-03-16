@@ -3,7 +3,7 @@ body {
 }
 
 body .lm_content{
-    overflow: scroll;
+    overflow: auto;
 }
 
 /* body .panel {

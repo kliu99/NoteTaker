@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Card } from 'semantic-ui-react'
 
 import './NoteList.css';
 import NoteEntry from './NoteEntry';
@@ -85,6 +86,8 @@ class NoteList extends Component {
         return (
             <div className="panel">
                 <div className="notelist">
+
+                <Card.Group itemsPerRow={1}>
                     {this.state.notes.map(note => {
                         return <NoteEntry
                             key={note.time}
@@ -95,6 +98,7 @@ class NoteList extends Component {
                             glEventHub={eventHub}
                             onDel={this.removeNote} />
                     })}
+                </Card.Group>
                 </div>
             </div>
         )

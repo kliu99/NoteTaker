@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import { Card, Image, Icon } from 'semantic-ui-react'
 
 import logo from './logo.svg';
 import Duration from './components/Duration';
@@ -33,17 +34,31 @@ class Home extends React.Component {
 
                 <h2>Library</h2>
 
-                <ul>
+                <Card.Group centered itemsPerRow={3} stackable>
                     {this.state.videos.map(meta => {
                         return (
-                            <li>
-                                <img src={`https://img.youtube.com/vi/${meta.video_id}/hqdefault.jpg`}/>
-                                <Link to={`v/${meta.video_id}`}>{meta.title} by {meta.author}</Link>
-                                <Duration seconds={meta.duration} />
-                            </li>
+                            <Link to={`v/${meta.video_id}`}>
+                                <Card raised link>
+                                    <Image src={`https://img.youtube.com/vi/${meta.video_id}/hqdefault.jpg`} />
+                                    <Card.Content>
+                                    <Card.Header>
+                                        {meta.title}
+                                    </Card.Header>
+                                    <Card.Meta textAlign='center'>
+                                        {/* <Duration className='date' seconds={meta.duration} /> */}
+                                        <span className='date'>
+                                            <Icon name='user' /> {meta.author} <Duration seconds={meta.duration} />
+                                        </span>
+                                    </Card.Meta>
+                                    {/* <Card.Description>
+                                        Matthew is a musician living in Nashville.
+                                    </Card.Description> */}
+                                    </Card.Content>
+                                </Card>
+                            </Link>
                         )
                     })}
-                </ul>
+                </Card.Group>
             </div>
         )
     };

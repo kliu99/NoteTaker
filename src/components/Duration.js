@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {Icon} from 'semantic-ui-react'
 
 class Duration extends Component {
   format(seconds) {
@@ -19,7 +20,7 @@ class Duration extends Component {
   render() {
     return (
       <time dateTime={`P${Math.round(this.props.seconds)}S`} className={this.props.className} onClick={this.props.onClick}>
-        {this.format(this.props.seconds)}
+        <Icon name="time" inverted={this.props.inverted} color={this.props.color}/> {this.format(this.props.seconds)}
       </time>
     );
   }

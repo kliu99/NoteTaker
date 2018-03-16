@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Header, Dimmer, Card, List, Icon } from 'semantic-ui-react';
 
 import NoteEntry from './NoteEntry';
 import { debounce } from './components/utils';
@@ -85,10 +86,10 @@ class NewNote extends Component {
     reset = () => {
         // Reset state
         localStorage.removeItem(this.state.storageKey);
-        this.setState({ 
+        this.setState({
             isEdit: false,
             time: 0,
-            content: null,
+            content: undefined,
             note: {}
         }, () => {
             // Play video
@@ -111,28 +112,51 @@ class NewNote extends Component {
             return (<div>Waiting for Player to load</div>)
         }
 
-        if (!this.state.isEdit) {
-            return (
-                <button onClick={this.newNote}>New Note</button>
-            )
-        }
+        // if (!this.state.isEdit) {
+        //     return (
+        //         <Button onClick={this.newNote} size='massive'>
+        //             <Icon name='plus' />
+        //             New Note
+        //         </Button>
+        //     )
+        // }
 
         const eventHub = this.props.glEventHub;
-        return (
-            <div className="notelist">
-                <NoteEntry ref="noteEditor"
-                    readOnly={false}
-                    time={this.state.time}
-                    content={this.state.content}
-                    onChange={debounce(this.onNoteChange, 250)}
-                    player={this.state.player}
-                    glEventHub={eventHub}
-                />
+        const extra = (
+            <List horizontal>
+                <List.Item as='a' onClick={this.reset}>
+                    <Icon name='x' inverted color='red' />
+                </List.Item>
+                }
+                <List.Item as='a' onClick={this.addNote}>
+                    <Icon name='check' inverted color='green' />
+                </List.Item>
+            </List>
+        )
 
-                <button onClick={this.addNote}>Add Note</button>
-                <button onClick={this.reset}>Cancel</button>
-                <button onClick={this.emptyStorage}>Empty Storage</button>
-            </div>
+        return (
+                <Dimmer.Dimmable dimmed={!this.state.isEdit}>
+                    <Dimmer active={!this.state.isEdit} onClickOutside={this.newNote} onClick={this.newNote}>
+                        <Header as='h2' icon inverted>
+                            <Icon name='plus' />
+                            New Note
+                        </Header>
+                    </Dimmer>
+
+                    <div className="notelist">
+                        <Card.Group itemsPerRow={1}>
+                            <NoteEntry ref="noteEditor"
+                                readOnly={false}
+                                time={this.state.time}
+                                content={this.state.content}
+                                onChange={debounce(this.onNoteChange, 250)}
+                                player={this.state.player}
+                                glEventHub={eventHub}
+                                extra={extra}
+                            />
+                        </Card.Group>
+                    </div>
+                </Dimmer.Dimmable>
         )
     }
 

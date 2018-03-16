@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader'
 import 'jquery/dist/jquery.min.js'
+import 'semantic-ui-css/semantic.min.css';
 import 'golden-layout/dist/goldenlayout.min.js'
 import 'golden-layout/src/css/goldenlayout-base.css'
 import 'golden-layout/src/css/goldenlayout-dark-theme.css'

@@ -5,6 +5,7 @@ import './NoteTaker.css';
 import Video from './Video';
 import NoteList from './NoteList';
 import NewNote from './NewNote';
+import Menu from './Menu';
 
 class NoteTaker extends Component {
 
@@ -74,6 +75,11 @@ class NoteTaker extends Component {
       // layout.on('stateChanged', debounce(this.stateChanged, 200));
       // layout.on('stateChanged', debounce(this.stateChanged, 0));
 
+      // When item is created
+      layout.on('windowOpened', (e) => {
+        console.log(e);
+      })
+
       // When item is destroyed
       layout.on('itemDestroyed', (e) => {
         // Bug in GL: stack overflow when component has complex object.
@@ -120,7 +126,12 @@ class NoteTaker extends Component {
   // }
 
   render() {
-    return <div />;
+    return (
+      <div>
+        <Menu />
+        <div id="container"/>
+      </div>
+    );
   }
 }
 
