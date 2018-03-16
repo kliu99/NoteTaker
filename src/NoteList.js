@@ -12,7 +12,7 @@ class NoteList extends Component {
             playerTime: 0,
             player: null,
             notes: [],
-            storageKey: `v/${this.props.id}`
+            storageKey: `notes/${this.props.id}`
         }
     }
 

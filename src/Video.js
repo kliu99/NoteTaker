@@ -23,9 +23,12 @@ class Video extends Component {
                         autoplay: 1
                     }
                 }
-            }
+            },
+            storageKey: `meta/${this.props.id}`
         };
         this.videoChanged = this.videoChanged.bind(this);
+
+        this.onReady = this.onReady.bind(this);
     }
 
     componentWillMount() {
@@ -50,9 +53,17 @@ class Video extends Component {
         this.setState({ url: null, playing: false })
     }
 
-    onReady = () => {
-        console.log('onReady');
-        this.props.glEventHub.emit('set-player', this.player);
+    onReady() {
+        // Push player instance to all windows
+        this.props.glEventHub.emit('set-player', this.player.getInternalPlayer());
+        // Save video metadata
+        const meta = this.player.getInternalPlayer().getVideoData();
+        localStorage.setItem(this.state.storageKey, JSON.stringify({
+            video_id: meta.video_id,
+            author: meta.author,
+            title: meta.title,
+            duration: this.player.getDuration()
+        }));
     }
 
     onPlay = () => {

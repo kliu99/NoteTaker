@@ -2,19 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 
 import logo from './logo.svg';
+import Duration from './components/Duration';
 
 class Home extends React.Component {
 
     componentWillMount() {
-        let docs = [];
+        let videos = [];
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
-            if (key.startsWith("v/")) {
-                docs.push(key);
+            if (key.startsWith("meta/")) {
+                videos.push(JSON.parse(localStorage.getItem(key)));
             }
         }
 
-        this.setState( {docs} );
+        this.setState({ videos });
     }
 
 
@@ -29,15 +30,16 @@ class Home extends React.Component {
                 <Link to="/v/YE7VzlLtp-4">need a url </Link>
 
                 <h2>Library</h2>
-                
+
                 <ul>
-                {this.state.docs.map(doc => {
-                    return (
-                        <li>
-                            <Link to={doc}>{doc}</Link>
-                        </li>
-                    )
-                })}
+                    {this.state.videos.map(meta => {
+                        return (
+                            <li>
+                                <Link to={`v/${meta.video_id}`}>{meta.title} by {meta.author}</Link>
+                                <Duration seconds={meta.duration} />
+                            </li>
+                        )
+                    })}
                 </ul>
             </div>
         )

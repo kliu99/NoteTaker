@@ -52,7 +52,8 @@ class NewNote extends Component {
         }, this.onNoteChange);
 
         // Pause video
-        this.props.glEventHub.emit('set-playing', false);
+        this.state.player.pauseVideo();
+        // this.props.glEventHub.emit('set-playing', false);
     }
 
     editNote = (note) => {
@@ -66,7 +67,7 @@ class NewNote extends Component {
             // Jump to video location
             this.state.player.seekTo(this.state.time);
             // Pause video
-            this.props.glEventHub.emit('set-playing', false);
+            this.state.player.pauseVideo();
         })
     }
 
@@ -91,7 +92,7 @@ class NewNote extends Component {
             note: {}
         }, () => {
             // Play video
-            this.props.glEventHub.emit('set-playing', true);
+            this.state.player.playVideo();
         });
     }
 
