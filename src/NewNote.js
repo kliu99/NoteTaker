@@ -47,9 +47,9 @@ class NewNote extends Component {
             time: this.state.player.getCurrentTime(),
             isEdit: true
         }, this.onNoteChange);
-        
+
         // Pause video
-        this.state.player.playing = false;
+        this.props.glEventHub.emit('set-playing', false);
     }
 
     getPlayerTime = () => {
@@ -75,6 +75,8 @@ class NewNote extends Component {
             content: null,
             note: {}
         });
+        // Resume video
+        this.props.glEventHub.emit('set-playing', true);
     }
 
     onNoteChange = (content) => {

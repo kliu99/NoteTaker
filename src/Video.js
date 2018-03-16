@@ -12,6 +12,7 @@ class Video extends Component {
         // Initial state
         this.state = {
             url: null,
+            playing: true,
             config: {
                 youtube: {
                     playerVars: {
@@ -29,14 +30,20 @@ class Video extends Component {
 
     componentWillMount() {
         this.props.glEventHub.on('video-changed', this.videoChanged);
+        this.props.glEventHub.on('set-playing', this.setPlaying);
     }
 
     componentWillUnmount() {
         this.props.glEventHub.off('video-changed', this.videoChanged);
+        this.props.glEventHub.off('set-playing', this.setPlaying);
     }
 
     videoChanged(vid) {
         this.setState( {url: `https://www.youtube.com/watch?v=${vid}`} )
+    }
+
+    setPlaying = (playing) => {
+        this.setState( { playing } );
     }
 
     stop = () => {
@@ -82,6 +89,7 @@ class Video extends Component {
                     width='100%'
                     height='100%'
                     url={this.state.url}
+                    playing={this.state.playing}
                     config={this.state.config}
                     onReady={this.onReady}
                     onStart={() => console.log('onStart')}

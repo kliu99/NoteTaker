@@ -22,7 +22,8 @@ class NoteList extends Component {
         // Retrieve notes from localStorage
         let notes = localStorage.getItem(this.state.storageKey);
         if (notes) {
-            this.setState( { notes: JSON.parse(notes) } );
+            notes = JSON.parse(notes).sort(this.sortByTime);
+            this.setState({ notes });
         }
     }
 
@@ -33,17 +34,32 @@ class NoteList extends Component {
 
     // Set video player
     setPlayer = (player) => {
-        this.setState( { player: player } );
+        this.setState({ player: player });
     }
 
+    // Add Note to NoteList
     addNote = (note) => {
         this.setState(prevState => ({
-            notes: prevState.notes.concat(note)
+            notes: prevState.notes.concat(note).sort(this.sortByTime)
         }), () => {
             // Save notes to localStorage
-            localStorage.setItem(this.state.storageKey, JSON.stringify(this.state.notes));    
+            localStorage.setItem(this.state.storageKey, JSON.stringify(this.state.notes));
         });
     }
+
+    // Remove note
+    removeNote = (time) => {
+        this.setState(prevState => ({ 
+            notes: prevState.notes.filter(note => note.time !== time) }
+        ), () => {
+            localStorage.setItem(this.state.storageKey, JSON.stringify(this.state.notes));
+        });
+
+    }
+    // 
+
+    // Sort By Time
+    sortByTime = (a, b) => a.time - b.time;
 
     render() {
         if (!this.state || !this.state.player) {
@@ -56,16 +72,17 @@ class NoteList extends Component {
                 <div className="notelist">
                     {this.state.notes.map((note, id) => {
                         return <NoteEntry
-                            key={id}
+                            key={note.time}
                             readOnly={true}
                             time={note.time}
                             content={note.content}
                             player={this.state.player}
-                            glEventHub={eventHub} />
+                            glEventHub={eventHub}
+                            onDel={this.removeNote} />
                     })}
                 </div>
 
-                
+
                 {/* <div className="card">
                     <div className="container">
                         <div className="note-toolbar">
@@ -75,7 +92,7 @@ class NoteList extends Component {
                     </div>
                 </div> */}
 
-                
+
             </div>
         )
     }

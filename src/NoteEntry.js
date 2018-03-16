@@ -11,17 +11,20 @@ class NoteEntry extends Component {
         }
     }
 
+    onDel = () => {
+        this.props.onDel(this.props.time);
+    }
+
     render() {
         return (
             <div className="card">
                 <div className="container">
                     <div className="note-toolbar">
-                        D |
+                        <button onClick={this.onDel}>D</button> |
                         E | 
                         <Duration className="time cursor-pointer" seconds={this.props.time} onClick={this.seekTo}/>
                     </div>
                     <RichText
-                        key={this.props.key}
                         readOnly={this.props.readOnly}
                         value={this.props.content}
                         glEventHub={this.props.glEventHub}
