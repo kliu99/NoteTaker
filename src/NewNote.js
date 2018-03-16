@@ -20,6 +20,8 @@ class NewNote extends Component {
 
     componentWillMount() {
         this.props.glEventHub.on('set-player', this.setPlayer);
+        this.props.glEventHub.on('edit-note', this.editNote);
+
         // Load unsaved notes from localStorage
         const unsaved = localStorage.getItem(this.state.storageKey);
         if (unsaved) {
@@ -35,6 +37,7 @@ class NewNote extends Component {
 
     componentWillUnmount() {
         this.props.glEventHub.off('set-player', this.setPlayer);
+        this.props.glEventHub.off('edit-note', this.editNote);
     }
 
     setPlayer = (player) => {
@@ -52,17 +55,29 @@ class NewNote extends Component {
         this.props.glEventHub.emit('set-playing', false);
     }
 
+    editNote = (note) => {
+        this.setState({
+            time: note.time,
+            content: note.content,
+            isEdit: true
+        }, () => {
+            // Update localStorage
+            localStorage.setItem(this.state.storageKey, JSON.stringify(note));
+            // Jump to video location
+            this.state.player.seekTo(this.state.time);
+            // Pause video
+            this.props.glEventHub.emit('set-playing', false);
+        })
+    }
+
     getPlayerTime = () => {
         this.setState({ time: this.state.player.getCurrentTime() });
     }
 
     addNote = () => {
         // Publish event to all the panels
-        this.props.glEventHub.emit('add-note', {
-            "time": this.state.time,
-            "content": this.state.content
-        })
-
+        const note = localStorage.getItem(this.state.storageKey);
+        this.props.glEventHub.emit('add-note', JSON.parse(note));
         this.reset();
     }
 
@@ -74,9 +89,10 @@ class NewNote extends Component {
             time: 0,
             content: null,
             note: {}
+        }, () => {
+            // Play video
+            this.props.glEventHub.emit('set-playing', true);
         });
-        // Resume video
-        this.props.glEventHub.emit('set-playing', true);
     }
 
     onNoteChange = (content) => {
@@ -86,11 +102,10 @@ class NewNote extends Component {
         };
 
         localStorage.setItem(this.state.storageKey, JSON.stringify(note));
-        this.setState({ content });
+        // this.setState({ content });
     }
 
     render() {
-
         if (!this.state.player) {
             return (<div>Waiting for Player to load</div>)
         }

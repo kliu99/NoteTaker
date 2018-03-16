@@ -19,16 +19,24 @@ class RichText extends React.Component {
 
   constructor(props) {
     super(props)
+
+    let value = initialValue;
     if (this.props.value) {
-      this.state = { 
-        value: Value.fromJSON(this.props.value)
-      }
-    } else {
-      this.state = {
-        value: Value.fromJSON(initialValue),
-      }
+      value = this.props.value;
+    }
+    this.state = {
+      value: Value.fromJSON(value),
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value != nextProps.value) {
+      this.setState({
+        value: Value.fromJSON(nextProps.value)
+      })
+    }
+  }
+
   /**
    * Get the block type for a series of auto-markdown shortcut `chars`.
    *
@@ -77,12 +85,11 @@ class RichText extends React.Component {
       <div className="editor">
         <Editor
           readOnly={this.props.readOnly}
-          placeholder="Write some markdown..."
+          placeholder="Write some notes..."
           value={this.state.value}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           renderNode={this.renderNode}
-          onClick={this.onClick}
         />
       </div>
     )
@@ -280,10 +287,6 @@ class RichText extends React.Component {
     // change.addMark('code')
 
     return true
-  }
-
-  onClick = () => {
-    // console.log("clicked");
   }
 }
 

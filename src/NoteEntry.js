@@ -15,13 +15,24 @@ class NoteEntry extends Component {
         this.props.onDel(this.props.time);
     }
 
+    onEdit = () => {
+        this.props.glEventHub.emit('edit-note', {
+            time: this.props.time, 
+            content: this.props.content
+        });
+    }
+
     render() {
         return (
             <div className="card">
                 <div className="container">
                     <div className="note-toolbar">
-                        <button onClick={this.onDel}>D</button> |
-                        E | 
+                        {this.props.readOnly && 
+                            <button onClick={this.onDel}>D</button>
+                        }
+                        {this.props.readOnly && 
+                            <button onClick={this.onEdit}>E</button>
+                        }
                         <Duration className="time cursor-pointer" seconds={this.props.time} onClick={this.seekTo}/>
                     </div>
                     <RichText
