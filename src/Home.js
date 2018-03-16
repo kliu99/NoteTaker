@@ -27,7 +27,9 @@ class Home extends React.Component {
                     <h1 className="App-title">Welcome to React</h1>
                 </header>
 
-                <Link to="/v/YE7VzlLtp-4">need a url </Link>
+                <button>Load Note</button>
+                
+                <Link to="/v/YE7VzlLtp-4">need a url to start</Link>
 
                 <h2>Library</h2>
 
@@ -35,6 +37,7 @@ class Home extends React.Component {
                     {this.state.videos.map(meta => {
                         return (
                             <li>
+                                <img src={`https://img.youtube.com/vi/${meta.video_id}/hqdefault.jpg`}/>
                                 <Link to={`v/${meta.video_id}`}>{meta.title} by {meta.author}</Link>
                                 <Duration seconds={meta.duration} />
                             </li>
