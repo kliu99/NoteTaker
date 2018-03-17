@@ -34,11 +34,15 @@ class Video extends Component {
     componentWillMount() {
         this.props.glEventHub.on('video-changed', this.videoChanged);
         this.props.glEventHub.on('set-playing', this.setPlaying);
+        this.props.glEventHub.on('seek-to', this.seekTo);
+        this.props.glEventHub.on('get-time', this.getTime);
     }
 
     componentWillUnmount() {
         this.props.glEventHub.off('video-changed', this.videoChanged);
         this.props.glEventHub.off('set-playing', this.setPlaying);
+        this.props.glEventHub.off('seek-to', this.seekTo);
+        this.props.glEventHub.off('get-time', this.getTime);
     }
 
     videoChanged(vid) {
@@ -49,13 +53,19 @@ class Video extends Component {
         this.setState( { playing } );
     }
 
+    seekTo = (time) => {
+        this.player.seekTo(time);
+    }
+
+    getTime = () => {
+        this.props.glEventHub.emit('set-time', this.player.getCurrentTime());
+    }
+
     stop = () => {
         this.setState({ url: null, playing: false })
     }
 
     onReady() {
-        // Push player instance to all windows
-        this.props.glEventHub.emit('set-player', this.player.getInternalPlayer());
         // Save video metadata
         const meta = this.player.getInternalPlayer().getVideoData();
         localStorage.setItem(this.state.storageKey, JSON.stringify({
@@ -66,22 +76,8 @@ class Video extends Component {
         }));
     }
 
-    onPlay = () => {
-        console.log('onPlay')
-    }
-
-    onPause = () => {
-        console.log('onPause')
-    }
-
-    onDuration = (duration) => {
-        console.log('onDuration', duration)
-    }
-
-    onProgress = state => {
-        // if (!this.state.seeking) {
-        //     this.setState(state)
-        // }
+    onProgress = () => {
+        this.props.glEventHub.emit('set-time', this.player.getCurrentTime());
     }
 
     ref = (player) => {
@@ -105,95 +101,16 @@ class Video extends Component {
                     onReady={this.onReady}
                     onStart={() => console.log('onStart')}
                     onPlay={this.onPlay}
-                    onPause={this.onPause}
                     onBuffer={() => console.log('onBuffer')}
                     onSeek={e => console.log('onSeek', e)}
-                    onEnded={this.onEnded}
                     onError={e => console.log('onError', e)}
                     onProgress={this.onProgress}
-                    onDuration={this.onDuration}
                     className="player"
                 />
                 </div>
             </div>
         );
     }
-
-    // render() {
-    //     const { url, playing, loop, controls, volume, muted, playbackRate, played, loaded, duration, config } = this.state
-
-    //     return (
-    //         <div className="panel">
-    //             <div className="wrapper">
-
-    //             {/* iframe reload after layout changed */}
-    //             {/* https://github.com/WolframHempel/golden-layout/issues/154 */}
-    //             <Player
-    //                 ref={this.ref}
-    //                 width='100%'
-    //                 height='100%'
-    //                 url={url}
-    //                 playing={playing}
-    //                 controls={controls}
-    //                 loop={loop}
-    //                 playbackRate={playbackRate}
-    //                 volume={volume}
-    //                 muted={muted}
-    //                 config={config}
-    //                 onReady={this.onReady}
-    //                 onStart={() => console.log('onStart')}
-    //                 onPlay={this.onPlay}
-    //                 onPause={this.onPause}
-    //                 onBuffer={() => console.log('onBuffer')}
-    //                 onSeek={e => console.log('onSeek', e)}
-    //                 onEnded={this.onEnded}
-    //                 onError={e => console.log('onError', e)}
-    //                 onProgress={this.onProgress}
-    //                 onDuration={this.onDuration}
-    //                 className="player"
-    //             />
-    //             </div>
-
-    //             <br/>
-    //             <table><tbody>
-    //                 <tr>
-    //                     <th>url</th>
-    //                     <td className={!url ? 'faded' : ''}>
-    //                         {(url instanceof Array ? 'Multiple' : url) || 'null'}
-    //                     </td>
-    //                 </tr>
-    //                 <tr>
-    //                     <th>playing</th>
-    //                     <td>{playing ? 'true' : 'false'}</td>
-    //                 </tr>
-    //                 <tr>
-    //                     <th>volume</th>
-    //                     <td>{volume.toFixed(3)}</td>
-    //                 </tr>
-    //                 <tr>
-    //                     <th>played</th>
-    //                     <td>{played.toFixed(3)}</td>
-    //                 </tr>
-    //                 <tr>
-    //                     <th>loaded</th>
-    //                     <td>{loaded.toFixed(3)}</td>
-    //                 </tr>
-    //                 <tr>
-    //                     <th>duration</th>
-    //                     <td><Duration seconds={duration} /></td>
-    //                 </tr>
-    //                 <tr>
-    //                     <th>elapsed</th>
-    //                     <td><Duration seconds={duration * played} /></td>
-    //                 </tr>
-    //                 <tr>
-    //                     <th>remaining</th>
-    //                     <td><Duration seconds={duration * (1 - played)} /></td>
-    //                 </tr>
-    //             </tbody></table>
-    //         </div>
-    //     );
-    // }
 }
 
 export default Video;

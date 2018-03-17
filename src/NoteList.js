@@ -10,15 +10,12 @@ class NoteList extends Component {
         super(props);
 
         this.state = {
-            playerTime: 0,
-            player: null,
             notes: [],
             storageKey: `notes/${this.props.id}`
         }
     }
 
     componentWillMount() {
-        this.props.glEventHub.on('set-player', this.setPlayer);
         this.props.glEventHub.on('add-note', this.addOrUpdateNote);
         // Retrieve notes from localStorage
         let notes = localStorage.getItem(this.state.storageKey);
@@ -29,13 +26,7 @@ class NoteList extends Component {
     }
 
     componentWillUnmount() {
-        this.props.glEventHub.off('set-player', this.setPlayer);
         this.props.glEventHub.off('add-note', this.addOrUpdateNote);
-    }
-
-    // Set video player
-    setPlayer = (player) => {
-        this.setState({ player: player });
     }
 
     // Add or Update NoteList
@@ -78,10 +69,6 @@ class NoteList extends Component {
     sortByTime = (a, b) => a.time - b.time;
 
     render() {
-        if (!this.state || !this.state.player) {
-            return (<div>Waiting for Player to load</div>)
-        }
-
         const eventHub = this.props.glEventHub;
         return (
             <div className="panel">
@@ -94,7 +81,6 @@ class NoteList extends Component {
                             readOnly={true}
                             time={note.time}
                             content={note.content}
-                            player={this.state.player}
                             glEventHub={eventHub}
                             onDel={this.removeNote} />
                     })}

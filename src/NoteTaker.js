@@ -70,60 +70,12 @@ class NoteTaker extends Component {
 
       // Emit event to all the components
       layout.eventHub.emit("video-changed", this.props.match.params.id)
-
-      // Save layout to local storage
-      // layout.on('stateChanged', debounce(this.stateChanged, 200));
-      // layout.on('stateChanged', debounce(this.stateChanged, 0));
-
-      // When item is created
-      layout.on('windowOpened', (e) => {
-        console.log(e);
-      })
-
-      // When item is destroyed
-      layout.on('itemDestroyed', (e) => {
-        // Bug in GL: stack overflow when component has complex object.
-        if (e.config.type === "component" &&
-          (e.config.component === "note-list" || e.config.component === "new-note")) {
-          e.container.extendState({ player: null })
-        }
-      })
     }, 0);
   }
 
   componentWillUnmount() {
     this.state.layout.destroy()
   }
-
-  // stateChanged(e) {
-  //   console.log(e);
-  //   console.log("stateChanged");
-
-  //   try {
-  //     const layoutConfig = JSON.stringify(this.state.layout.toConfig(), (key, value) => {
-  //       if (key == "player")
-  //         return null;
-  //       else
-  //         return value;
-  //     })
-
-  //     console.log(JSON.parse(layoutConfig));
-  //     localStorage.setItem(`v/${this.props.match.params.id}`, layoutConfig);
-
-  //     console.log(JSON.parse(layoutConfig));
-  //     console.log(JSON.parse(localStorage.getItem(`v/${this.props.match.params.id}`)))
-
-  //   } catch (error) {
-  //     console.log(error);
-  //     // retry in a second
-  //     setTimeout(this.stateChanged, 1000);
-  //   }
-
-  //   // if(!this.state.layout.isInitialised || !(this.state.layout.openPopouts.every((popout) => popout.isInitialised))) { 
-  //   //   console.log("returned");
-  //   //   return;
-  //   // }    
-  // }
 
   render() {
     return (

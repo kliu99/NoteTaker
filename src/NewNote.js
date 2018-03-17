@@ -10,7 +10,6 @@ class NewNote extends Component {
         super(props);
 
         this.state = {
-            player: null,
             time: 0,
             content: null,
             isEdit: false,
@@ -20,7 +19,7 @@ class NewNote extends Component {
     }
 
     componentWillMount() {
-        this.props.glEventHub.on('set-player', this.setPlayer);
+        this.props.glEventHub.on('set-time', this.setTime);
         this.props.glEventHub.on('edit-note', this.editNote);
 
         // Load unsaved notes from localStorage
@@ -37,24 +36,26 @@ class NewNote extends Component {
     }
 
     componentWillUnmount() {
-        this.props.glEventHub.off('set-player', this.setPlayer);
+        this.props.glEventHub.off('set-time', this.setTime);
         this.props.glEventHub.off('edit-note', this.editNote);
     }
 
-    setPlayer = (player) => {
-        this.setState({ player: player });
+    // Set player time
+    setTime = (time) => {
+        if (!this.state.isEdit) {
+            this.setState({ time })
+        }
     }
 
     newNote = () => {
         // Update state
         this.setState({
-            time: this.state.player.getCurrentTime(),
             isEdit: true
-        }, this.onNoteChange);
-
-        // Pause video
-        this.state.player.pauseVideo();
-        // this.props.glEventHub.emit('set-playing', false);
+        }, () => {
+            this.onNoteChange();
+            // Pause video
+            this.props.glEventHub.emit('set-playing', false);
+        });
     }
 
     editNote = (note) => {
@@ -66,14 +67,10 @@ class NewNote extends Component {
             // Update localStorage
             localStorage.setItem(this.state.storageKey, JSON.stringify(note));
             // Jump to video location
-            this.state.player.seekTo(this.state.time);
+            this.props.glEventHub.emit('seek-to', this.state.time);
             // Pause video
-            this.state.player.pauseVideo();
+            this.props.glEventHub.emit('set-playing', false);
         })
-    }
-
-    getPlayerTime = () => {
-        this.setState({ time: this.state.player.getCurrentTime() });
     }
 
     addNote = () => {
@@ -93,7 +90,7 @@ class NewNote extends Component {
             note: {}
         }, () => {
             // Play video
-            this.state.player.playVideo();
+            this.props.glEventHub.emit('set-playing', true);
         });
     }
 
@@ -108,19 +105,6 @@ class NewNote extends Component {
     }
 
     render() {
-        if (!this.state.player) {
-            return (<div>Waiting for Player to load</div>)
-        }
-
-        // if (!this.state.isEdit) {
-        //     return (
-        //         <Button onClick={this.newNote} size='massive'>
-        //             <Icon name='plus' />
-        //             New Note
-        //         </Button>
-        //     )
-        // }
-
         const eventHub = this.props.glEventHub;
         const extra = (
             <List horizontal>
@@ -135,28 +119,27 @@ class NewNote extends Component {
         )
 
         return (
-                <Dimmer.Dimmable dimmed={!this.state.isEdit}>
-                    <Dimmer active={!this.state.isEdit} onClickOutside={this.newNote} onClick={this.newNote}>
-                        <Header as='h2' icon inverted>
-                            <Icon name='plus' />
-                            New Note
+            <Dimmer.Dimmable dimmed={!this.state.isEdit}>
+                <Dimmer active={!this.state.isEdit} onClickOutside={this.newNote} onClick={this.newNote}>
+                    <Header as='h2' icon inverted>
+                        <Icon name='plus' />
+                        New Note
                         </Header>
-                    </Dimmer>
+                </Dimmer>
 
-                    <div className="notelist">
-                        <Card.Group itemsPerRow={1}>
-                            <NoteEntry ref="noteEditor"
-                                readOnly={false}
-                                time={this.state.time}
-                                content={this.state.content}
-                                onChange={debounce(this.onNoteChange, 250)}
-                                player={this.state.player}
-                                glEventHub={eventHub}
-                                extra={extra}
-                            />
-                        </Card.Group>
-                    </div>
-                </Dimmer.Dimmable>
+                <div className="notelist">
+                    <Card.Group itemsPerRow={1}>
+                        <NoteEntry ref="noteEditor"
+                            readOnly={false}
+                            time={this.state.time}
+                            content={this.state.content}
+                            onChange={debounce(this.onNoteChange, 250)}
+                            glEventHub={eventHub}
+                            extra={extra}
+                        />
+                    </Card.Group>
+                </div>
+            </Dimmer.Dimmable>
         )
     }
 

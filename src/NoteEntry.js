@@ -8,7 +8,7 @@ class NoteEntry extends Component {
 
     seekTo = () => {
         if (this.props.time) {
-            this.props.player.seekTo(this.props.time);
+            this.props.glEventHub.emit('seek-to', this.props.time);
         }
     }
 
