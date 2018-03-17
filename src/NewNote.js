@@ -13,6 +13,7 @@ class NewNote extends Component {
             time: 0,
             content: null,
             isEdit: false,
+            isPlaying: true,
             note: {},
             storageKey: `unsaved-${this.props.id}`
         }
@@ -47,15 +48,23 @@ class NewNote extends Component {
         }
     }
 
+    setPlaying = () => {
+        this.setState(prevState => ({
+            isPlaying: !prevState.isPlaying
+        }), () => {
+            this.props.glEventHub.emit('set-playing', this.state.isPlaying);
+        })
+    }
+
     newNote = () => {
         // Update state
         this.setState({
             isEdit: true
-        }, () => {
-            this.onNoteChange();
-            // Pause video
-            this.props.glEventHub.emit('set-playing', false);
         });
+
+        this.onNoteChange();
+        // Pause video
+        // this.props.glEventHub.emit('set-playing', false);
     }
 
     editNote = (note) => {
@@ -69,7 +78,7 @@ class NewNote extends Component {
             // Jump to video location
             this.props.glEventHub.emit('seek-to', this.state.time);
             // Pause video
-            this.props.glEventHub.emit('set-playing', false);
+            // this.props.glEventHub.emit('set-playing', false);
         })
     }
 
@@ -87,6 +96,7 @@ class NewNote extends Component {
             isEdit: false,
             time: 0,
             content: undefined,
+            isPlaying: true,
             note: {}
         }, () => {
             // Play video
@@ -115,6 +125,9 @@ class NewNote extends Component {
                 <List.Item as='a' onClick={this.addNote}>
                     <Icon name='check' inverted color='green' />
                 </List.Item>
+                <List.Item as='a' onClick={this.setPlaying}>
+                    <Icon name={!this.state.isPlaying ? 'play' : 'pause'} inverted color='grey' />
+                </List.Item>
             </List>
         )
 
@@ -136,6 +149,7 @@ class NewNote extends Component {
                             onChange={debounce(this.onNoteChange, 250)}
                             glEventHub={eventHub}
                             extra={extra}
+                            isPlaying={this.state.isPlaying}
                         />
                     </Card.Group>
                 </div>
