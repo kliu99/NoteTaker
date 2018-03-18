@@ -42,7 +42,7 @@ class NoteEntry extends Component {
                             </List.Item>
                             }
                             <List.Item as='a'>
-                                <Duration className="time cursor-pointer" seconds={this.props.time} onClick={this.seekTo} inverted={true} color='grey' />
+                                <Duration className="time cursor-pointer" seconds={this.props.time} onClick={this.seekTo} inverted={true} color='grey' icon={true} />
                             </List.Item>
                         </List>
                     </Card.Meta>

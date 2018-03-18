@@ -44,9 +44,8 @@ class Home extends React.Component {
                                             {meta.title}
                                         </Card.Header>
                                         <Card.Meta textAlign='center'>
-                                            {/* <Duration className='date' seconds={meta.duration} /> */}
                                             <span className='date'>
-                                                <Icon name='user' /> {meta.author} <Duration seconds={meta.duration} />
+                                                <Icon name='user' /> {meta.author} <Duration seconds={meta.duration} icon={true} />
                                             </span>
                                         </Card.Meta>
                                         {/* <Card.Description>
