@@ -106,12 +106,12 @@ class NewNote extends Component {
 
     onNoteChange = (content) => {
         const note = {
+            "videoId": this.props.id,
             "time": this.state.time,
             "content": content
         };
 
         localStorage.setItem(this.state.storageKey, JSON.stringify(note));
-        // this.setState({ content });
     }
 
     render() {

@@ -4,21 +4,20 @@ import { Card, Image, Icon } from 'semantic-ui-react'
 
 import logo from './logo.svg';
 import Duration from './components/Duration';
+import db from './db';
 
 class Home extends React.Component {
 
-    componentWillMount() {
-        let videos = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key.startsWith("meta/")) {
-                videos.push(JSON.parse(localStorage.getItem(key)));
-            }
-        }
-
-        this.setState({ videos });
+    constructor(props) {
+        super(props);
+        this.state = { videos: [] };
     }
 
+    componentWillMount() {
+        db.meta.toArray().then(videos => {
+            this.setState({ videos });
+        })
+    }
 
     render() {
         return (
@@ -29,7 +28,7 @@ class Home extends React.Component {
                 </header>
 
                 <button>Load Note</button>
-                
+
                 <Link to="/v/YE7VzlLtp-4">need a url to start</Link>
 
                 <h2>Library</h2>
@@ -37,20 +36,20 @@ class Home extends React.Component {
                 <Card.Group centered itemsPerRow={3} stackable>
                     {this.state.videos.map(meta => {
                         return (
-                            <Link to={`v/${meta.video_id}`}>
+                            <Link to={`v/${meta.videoId}`}>
                                 <Card raised link>
-                                    <Image src={`https://img.youtube.com/vi/${meta.video_id}/hqdefault.jpg`} />
+                                    <Image src={`https://img.youtube.com/vi/${meta.videoId}/hqdefault.jpg`} />
                                     <Card.Content>
-                                    <Card.Header>
-                                        {meta.title}
-                                    </Card.Header>
-                                    <Card.Meta textAlign='center'>
-                                        {/* <Duration className='date' seconds={meta.duration} /> */}
-                                        <span className='date'>
-                                            <Icon name='user' /> {meta.author} <Duration seconds={meta.duration} />
-                                        </span>
-                                    </Card.Meta>
-                                    {/* <Card.Description>
+                                        <Card.Header>
+                                            {meta.title}
+                                        </Card.Header>
+                                        <Card.Meta textAlign='center'>
+                                            {/* <Duration className='date' seconds={meta.duration} /> */}
+                                            <span className='date'>
+                                                <Icon name='user' /> {meta.author} <Duration seconds={meta.duration} />
+                                            </span>
+                                        </Card.Meta>
+                                        {/* <Card.Description>
                                         Matthew is a musician living in Nashville.
                                     </Card.Description> */}
                                     </Card.Content>

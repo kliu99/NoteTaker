@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Player from 'react-player'
 
 import './Video.css'
-
+import db from './db'
 
 class Video extends Component {
 
@@ -68,12 +68,12 @@ class Video extends Component {
     onReady() {
         // Save video metadata
         const meta = this.player.getInternalPlayer().getVideoData();
-        localStorage.setItem(this.state.storageKey, JSON.stringify({
-            video_id: meta.video_id,
+        db.meta.put({
+            videoId: meta.video_id,
             author: meta.author,
             title: meta.title,
             duration: this.player.getDuration()
-        }));
+        });
     }
 
     onProgress = () => {
