@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card } from 'semantic-ui-react'
+import { Card, Segment, Menu, Icon } from 'semantic-ui-react'
 import Dexie from 'dexie';
 
 import './NoteList.css';
@@ -45,12 +45,58 @@ class NoteList extends Component {
             .then(() => this.getNotes());
     }
 
+    // Download JSON
+    onDownload = () => {
+        // export both notes and meta
+        // this.state.notes.
+
+        db.meta.where('videoId').equals(this.props.id).first().then(meta => {
+            const content = {
+                meta, 
+                notes: this.state.notes
+            };
+
+            console.log(content);
+            // Download JSON
+
+            // Load JSON:
+            // db.meta.put(json.meta);
+            // db.notes.put(json.notes);
+        });
+    }
+
+
     render() {
         const eventHub = this.props.glEventHub;
         return (
             <div className="panel">
-                <div className="notelist">
+                <Menu attached='top' inverted text color='black'>
+                    <Menu.Item header>Note Taker</Menu.Item>
+                    <Menu.Item
+                        name="library"
+                        href='/' 
+                    >
+                        <Icon name='grid layout' /> Library
+                    </Menu.Item>
 
+                    <Menu.Item
+                        as='a'
+                        name='download'
+                        onClick={this.onDownload}
+                    >
+                        <Icon name='download' /> Download
+                    </Menu.Item>
+
+                     <Menu.Item
+                        name='share'
+                        href={`/#/n/${this.props.id}`} 
+                        target='_blank'
+                    >
+                        <Icon name='share alternate' /> Share
+                    </Menu.Item>
+                </Menu>
+                <Segment attached inverted className="notelist">
+                    {/* <div className="notelist"> */}
                     <Card.Group itemsPerRow={1}>
                         {this.state.notes.map(note => {
                             return <NoteEntry
@@ -62,7 +108,8 @@ class NoteList extends Component {
                                 onDel={this.removeNote} />
                         })}
                     </Card.Group>
-                </div>
+                    {/* </div> */}
+                </Segment>
             </div>
         )
     }

@@ -119,3 +119,8 @@ input:focus {
 .cursor-pointer {
   cursor: pointer;
 }
+
+
+.panel>.ui.text.menu .header.item {
+  color: white;
+}
