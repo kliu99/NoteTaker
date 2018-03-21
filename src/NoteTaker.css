@@ -3,9 +3,5 @@ body {
 }
 
 body .lm_content{
-    overflow: auto;
+    overflow-y: auto;
 }
-
-/* body .panel {
-    overflow: scroll;
-} */

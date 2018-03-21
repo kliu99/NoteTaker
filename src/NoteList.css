@@ -87,6 +87,9 @@ input:focus {
     margin-top: 1em;
   }
 
+.segment.notelist.attached {
+  border: none;
+}
 
 .notelist > .ui.card, .ui.cards>.card {
     /* Add shadows to create the "card" effect */
@@ -119,7 +122,6 @@ input:focus {
 .cursor-pointer {
   cursor: pointer;
 }
-
 
 .panel>.ui.text.menu .header.item {
   color: white;

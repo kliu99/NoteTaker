@@ -52,7 +52,7 @@ class NoteList extends Component {
 
         db.meta.where('videoId').equals(this.props.id).first().then(meta => {
             const content = {
-                meta, 
+                meta,
                 notes: this.state.notes
             };
 
@@ -65,16 +65,18 @@ class NoteList extends Component {
         });
     }
 
+    // Stiky menu
+    handleContextRef = contextRef => this.setState({ contextRef })
 
     render() {
         const eventHub = this.props.glEventHub;
         return (
             <div className="panel">
-                <Menu attached='top' inverted text color='black'>
+            <Menu inverted text color='black' attached='top'>
                     <Menu.Item header>Note Taker</Menu.Item>
                     <Menu.Item
                         name="library"
-                        href='/' 
+                        href='/'
                     >
                         <Icon name='grid layout' /> Library
                     </Menu.Item>
@@ -87,16 +89,15 @@ class NoteList extends Component {
                         <Icon name='download' /> Download
                     </Menu.Item>
 
-                     <Menu.Item
+                    <Menu.Item
                         name='share'
-                        href={`/#/n/${this.props.id}`} 
+                        href={`/#/n/${this.props.id}`}
                         target='_blank'
                     >
                         <Icon name='share alternate' /> Share
                     </Menu.Item>
                 </Menu>
-                <Segment attached inverted className="notelist">
-                    {/* <div className="notelist"> */}
+                <Segment inverted className="notelist" basic attached>
                     <Card.Group itemsPerRow={1}>
                         {this.state.notes.map(note => {
                             return <NoteEntry
@@ -108,7 +109,6 @@ class NoteList extends Component {
                                 onDel={this.removeNote} />
                         })}
                     </Card.Group>
-                    {/* </div> */}
                 </Segment>
             </div>
         )
