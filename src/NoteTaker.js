@@ -79,10 +79,11 @@ class NoteTaker extends Component {
 
   render() {
     return (
-      <div>
-        <Menu />
-        <div id="container"/>
-      </div>
+      <div />
+      // <div>
+      //   <Menu />
+      //   <div id="container"/>
+      // </div>
     );
   }
 }
