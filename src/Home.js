@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Card, Image, Icon } from 'semantic-ui-react'
+import { Container, Card, Image, Icon, Input } from 'semantic-ui-react'
+import Dropzone from 'react-dropzone'
 
 import logo from './logo.svg';
 import Duration from './components/Duration';
 import db from './db';
+import './Home.css';
 
 class Home extends React.Component {
 
@@ -14,20 +16,56 @@ class Home extends React.Component {
     }
 
     componentWillMount() {
+        this.readVideos();
+    }
+
+    readVideos = () => {
         db.meta.toArray().then(videos => {
             this.setState({ videos });
-        })
+        });
+    }
+
+    importNotes = (files) => {
+        db.meta.clear();
+        db.notes.clear();
+
+        let promises = [];
+        files.forEach(blb => {
+            let reader = new FileReader();
+            reader.addEventListener("loadend", (e) => {
+                const json = JSON.parse(e.srcElement.result);
+                db.meta.put(json.meta).then(() => {
+                    db.notes.bulkPut(json.notes).then(() => {
+                        this.readVideos();
+                    })  
+                });
+                
+            });
+            reader.readAsText(blb);
+        });
     }
 
     render() {
         return (
-            <div>
+            <Container>
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <h1 className="App-title">Welcome to React</h1>
                 </header>
 
-                <button>Load Note</button>
+                <Dropzone onDrop={this.importNotes} accept="application/json" className="dropzone">
+                    <Icon name="upload" /> <p>Dropping note files here, or click to select files to upload.</p>
+                </Dropzone>
+
+
+                search bar.
+
+
+
+                <Input iconPosition='left' placeholder='Email'>
+                    <Icon name='linkify' />
+                    <input />
+                </Input>
 
                 <Link to="/v/YE7VzlLtp-4">need a url to start</Link>
 
@@ -36,7 +74,7 @@ class Home extends React.Component {
                 <Card.Group centered itemsPerRow={3} stackable>
                     {this.state.videos.map(meta => {
                         return (
-                            <Link to={`v/${meta.videoId}`}>
+                            <Link to={`v/${meta.videoId}`} key={meta.videoId}>
                                 <Card raised link>
                                     <Image src={`https://img.youtube.com/vi/${meta.videoId}/hqdefault.jpg`} />
                                     <Card.Content>
@@ -57,7 +95,7 @@ class Home extends React.Component {
                         )
                     })}
                 </Card.Group>
-            </div>
+            </Container>
         )
     };
 }

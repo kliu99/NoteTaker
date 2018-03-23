@@ -5,7 +5,6 @@ import './NoteTaker.css';
 import Video from './Video';
 import NoteList from './NoteList';
 import NewNote from './NewNote';
-import Menu from './Menu';
 
 class NoteTaker extends Component {
 

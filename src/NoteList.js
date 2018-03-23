@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Segment, Menu, Icon } from 'semantic-ui-react'
 import Dexie from 'dexie';
+import FileSaver from "file-saver";
 
 import './NoteList.css';
 import NoteEntry from './NoteEntry';
@@ -51,17 +52,14 @@ class NoteList extends Component {
         // this.state.notes.
 
         db.meta.where('videoId').equals(this.props.id).first().then(meta => {
+            // Prepare document
             const content = {
                 meta,
                 notes: this.state.notes
             };
-
-            console.log(content);
             // Download JSON
-
-            // Load JSON:
-            // db.meta.put(json.meta);
-            // db.notes.put(json.notes);
+            const blob = new Blob([JSON.stringify(content)], {type: 'application/json;charset=utf-8'});
+            FileSaver(blob, `${content.meta.title}.json`);
         });
     }
 
