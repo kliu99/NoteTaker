@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Container, Card, Image, Icon, Input } from 'semantic-ui-react'
+import { Container, Card, Image, Icon, Form, Button } from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 
 import logo from './logo.svg';
@@ -12,7 +12,7 @@ class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { videos: [] };
+        this.state = { videos: [], urlInput: '' };
     }
 
     componentWillMount() {
@@ -45,6 +45,18 @@ class Home extends React.Component {
         });
     }
 
+    // Handle form submit
+    handleChange = (e, { name, value }) => this.setState({ [name]: value })
+    
+    handleSubmit = () => {
+        console.log(this.state.urlInput)
+        // extra video id from url
+
+        // go to link
+        // use react-router nav?
+
+    }
+
     render() {
         return (
             <Container>
@@ -57,15 +69,16 @@ class Home extends React.Component {
                     <Icon name="upload" /> <p>Dropping note files here, or click to select files to upload.</p>
                 </Dropzone>
 
+                <Form onSubmit={this.handleSubmit}>
+                <Form.Group>
+                <Form.Input placeholder='Youtube video link' width={16} 
+                name='urlInput' value={this.state.urlInput} onChange={this.handleChange} required />
+                <Button type='submit'> OK </Button>    
+                </Form.Group>
+                
+                </Form>
 
-                search bar.
-
-
-
-                <Input iconPosition='left' placeholder='Email'>
-                    <Icon name='linkify' />
-                    <input />
-                </Input>
+                
 
                 <Link to="/v/YE7VzlLtp-4">need a url to start</Link>
 
