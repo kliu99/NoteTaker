@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import Player from 'react-player'
+import Player from 'react-player';
 
-import './Video.css'
-import db from './db'
+import './Video.css';
+import db from './db';
+import captureVideoFrame from 'capture-video-frame';
+import { iframe2image } from 'iframe2image';
+
 
 class Video extends Component {
 
@@ -22,9 +25,15 @@ class Video extends Component {
                         modestbranding: 0,
                         autoplay: 1
                     }
+                },
+                file: { 
+                    attributes: {
+                        crossorigin: 'anonymous'
+                    }
                 }
             },
-            storageKey: `meta/${this.props.id}`
+            storageKey: `meta/${this.props.id}`,
+            screenshot: null
         };
         this.videoChanged = this.videoChanged.bind(this);
 
@@ -108,6 +117,23 @@ class Video extends Component {
                     className="player"
                 />
                 </div>
+
+                <button onClick={() => {
+                    iframe2image(this.player.getInternalPlayer().getIframe(), (err, img) => {
+                        if (err) {
+                            if (err) { return console.error(err); }
+                        }
+                        this.setState({screenshot: img})
+                    })
+                    // const frame = captureVideoFrame(this.player.getInternalPlayer())
+                    // console.log('captured frame', frame)
+                    // this.setState({ screenshot: frame.dataUri })
+                }}>Capture Frame</button>
+                <br />
+                {this.state.screenshot &&
+                    <img src={this.state.screenshot} width='320px' />
+                }
+
             </div>
         );
     }
