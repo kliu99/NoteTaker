@@ -4,8 +4,6 @@ import Player from 'react-player';
 import './Video.css';
 import db from './db';
 import captureVideoFrame from 'capture-video-frame';
-import { iframe2image } from 'iframe2image';
-
 
 class Video extends Component {
 
@@ -74,6 +72,16 @@ class Video extends Component {
         this.setState({ url: null, playing: false })
     }
 
+    captureFrame() {
+        this.setPlaying(false);
+        
+        const frame = captureVideoFrame(this.player.getInternalPlayer())
+        console.log('captured frame', frame)
+        this.setState({ screenshot: frame.dataUri })
+
+        this.setPlaying(true);
+    }
+
     onReady() {
         // Save video metadata
         const meta = this.player.getInternalPlayer().getVideoData();
@@ -118,17 +126,7 @@ class Video extends Component {
                 />
                 </div>
 
-                <button onClick={() => {
-                    iframe2image(this.player.getInternalPlayer().getIframe(), (err, img) => {
-                        if (err) {
-                            if (err) { return console.error(err); }
-                        }
-                        this.setState({screenshot: img})
-                    })
-                    // const frame = captureVideoFrame(this.player.getInternalPlayer())
-                    // console.log('captured frame', frame)
-                    // this.setState({ screenshot: frame.dataUri })
-                }}>Capture Frame</button>
+                <button onClick={this.captureFrame.bind(this)}>Capture Frame</button>
                 <br />
                 {this.state.screenshot &&
                     <img src={this.state.screenshot} width='320px' />

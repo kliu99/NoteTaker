@@ -6,4 +6,6 @@
     border-color: rgb(102, 102, 102);
     border-style: dashed;
     border-radius: 5px;
+    text-align: center;
+    padding: 1em;
 }

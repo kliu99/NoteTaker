@@ -59,7 +59,7 @@ class NoteList extends Component {
             };
             // Download JSON
             const blob = new Blob([JSON.stringify(content)], {type: 'application/json;charset=utf-8'});
-            FileSaver(blob, `${content.meta.title}.json`);
+            FileSaver.saveAs(blob, `${content.meta.title}.json`);
         });
     }
 

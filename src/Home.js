@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Container, Card, Image, Icon, Form, Button } from 'semantic-ui-react'
+import { Header, Container, Card, Image, Icon, Form, Button } from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 
 import logo from './logo.svg';
@@ -60,10 +60,12 @@ class Home extends React.Component {
     render() {
         return (
             <Container>
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
+                <Header as='h2' icon textAlign='center'>
+                    <Icon name='sticky note outline' circular />
+                    <Header.Content>
+                    Note Taker
+                    </Header.Content>
+                </Header>
 
                 <Dropzone onDrop={this.importNotes} accept="application/json" className="dropzone">
                     <Icon name="upload" /> <p>Dropping note files here, or click to select files to upload.</p>
@@ -78,8 +80,6 @@ class Home extends React.Component {
                 
                 </Form>
 
-                
-
                 <Link to="/v/YE7VzlLtp-4">need a url to start</Link>
 
                 <h2>Library</h2>
@@ -91,7 +91,7 @@ class Home extends React.Component {
                                 <Card raised link>
                                     <Image src={`https://img.youtube.com/vi/${meta.videoId}/hqdefault.jpg`} />
                                     <Card.Content>
-                                        <Card.Header>
+                                        <Card.Header textAlign='center'>
                                             {meta.title}
                                         </Card.Header>
                                         <Card.Meta textAlign='center'>
