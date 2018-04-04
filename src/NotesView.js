@@ -4,7 +4,11 @@ import Dexie from 'dexie';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
-import FileSaver from "file-saver";
+
+// import html2pdf from './libs/html2pdf.bundle.min.js'
+
+import htmlDocx from 'html-docx-js/dist/html-docx';
+import FileSaver from 'file-saver';
 
 import logo from './logo.svg';
 import Duration from './components/Duration';
@@ -63,13 +67,18 @@ class NotesView extends React.Component {
             };
             // Download JSON
             const blob = new Blob([JSON.stringify(content)], {type: 'application/json;charset=utf-8'});
-            FileSaver.saveAs(blob, `${content.meta.title}.json`);
+            FileSaver.saveAs(blob, `${this.state.meta.title}.json`);
         });
     }
 
     // Download as Word
     toWord = () => {
-
+        const contentDocument = document.querySelector('.ui.text.container')
+        const content = `<!DOCTYPE html><html><body>${contentDocument.outerHTML}</body></html>`;
+        var converted = htmlDocx.asBlob(content, {
+            orientation: 'portrait'
+        });
+        FileSaver.saveAs(converted, `${this.state.meta.title}.docx`)
     }
 
     render() {
