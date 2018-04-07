@@ -64,7 +64,7 @@ class NewNote extends Component {
 
         this.onNoteChange();
         // Pause video
-        // this.props.glEventHub.emit('set-playing', false);
+        this.props.glEventHub.emit('set-playing', false);
     }
 
     editNote = (note) => {
@@ -78,7 +78,7 @@ class NewNote extends Component {
             // Jump to video location
             this.props.glEventHub.emit('seek-to', this.state.time);
             // Pause video
-            // this.props.glEventHub.emit('set-playing', false);
+            this.props.glEventHub.emit('set-playing', false);
         })
     }
 
@@ -125,9 +125,9 @@ class NewNote extends Component {
                 <List.Item as='a' onClick={this.addNote}>
                     <Icon name='check' inverted color='green' />
                 </List.Item>
-                <List.Item as='a' onClick={this.setPlaying}>
+                {/* <List.Item as='a' onClick={this.setPlaying}>
                     <Icon name={!this.state.isPlaying ? 'play' : 'pause'} inverted color='grey' />
-                </List.Item>
+                </List.Item> */}
             </List>
         )
 

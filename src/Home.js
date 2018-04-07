@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Header, Container, Card, Image, Icon, Form, Button } from 'semantic-ui-react'
+import { List, Header, Container, Card, Image, Icon, Form, Button } from 'semantic-ui-react'
 import Dropzone from 'react-dropzone'
 
-import logo from './logo.svg';
 import Duration from './components/Duration';
 import db from './db';
 import './Home.css';
@@ -29,7 +28,6 @@ class Home extends React.Component {
         db.meta.clear();
         db.notes.clear();
 
-        let promises = [];
         files.forEach(blb => {
             let reader = new FileReader();
             reader.addEventListener("loadend", (e) => {
@@ -95,9 +93,27 @@ class Home extends React.Component {
                                             {meta.title}
                                         </Card.Header>
                                         <Card.Meta textAlign='center'>
-                                            <span className='date'>
-                                                <Icon name='user' /> {meta.author} <Duration seconds={meta.duration} icon={true} />
-                                            </span>
+                                            <List horizontal>
+                                                <List.Item>
+                                                    <Icon name='user' />
+                                                    <List.Content>
+                                                        {meta.author}
+                                                    </List.Content>
+                                                </List.Item>
+                                                <List.Item>
+                                                    <Icon name='time' />
+                                                    <List.Content>
+                                                        <Duration seconds={meta.duration} icon={false} />
+                                                    </List.Content>
+                                                </List.Item>
+                                                <List.Item>
+                                                <Icon name='share alternate' />
+                                                    <List.Content>
+                                                        <Link to={`n/${meta.videoId}`}>Share</Link>
+                                                    </List.Content>
+                                                </List.Item> 
+                                            </List>
+
                                         </Card.Meta>
                                         {/* <Card.Description>
                                         Matthew is a musician living in Nashville.

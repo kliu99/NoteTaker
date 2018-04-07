@@ -126,11 +126,11 @@ class Video extends Component {
                 />
                 </div>
 
-                <button onClick={this.captureFrame.bind(this)}>Capture Frame</button>
+                {/* <button onClick={this.captureFrame.bind(this)}>Capture Frame</button>
                 <br />
                 {this.state.screenshot &&
                     <img src={this.state.screenshot} width='320px' />
-                }
+                } */}
 
             </div>
         );

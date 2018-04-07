@@ -277,7 +277,7 @@ class RichText extends React.Component {
     const { value } = change
     if (value.isExpanded) return
 
-    const { startBlock, startOffset } = value
+    // const { startBlock, startOffset } = value
 
     // change.insertBlock('code')
     // change.insertInline('code')

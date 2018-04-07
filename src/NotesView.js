@@ -1,16 +1,11 @@
 import React from 'react';
-import { Item, Icon, Label, Container, Header, Menu } from 'semantic-ui-react';
+import { Item, Icon, Container, Header, Menu } from 'semantic-ui-react';
 import Dexie from 'dexie';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
-
-// import html2pdf from './libs/html2pdf.bundle.min.js'
 
 import htmlDocx from 'html-docx-js/dist/html-docx';
 import FileSaver from 'file-saver';
 
-import logo from './logo.svg';
 import Duration from './components/Duration';
 import RichText from './components/RichText';
 import db from './db';
