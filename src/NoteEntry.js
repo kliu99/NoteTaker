@@ -9,6 +9,7 @@ class NoteEntry extends Component {
     seekTo = () => {
         if (this.props.time) {
             this.props.glEventHub.emit('seek-to', this.props.time);
+            this.props.glEventHub.emit('set-playing', false);
         }
     }
 
@@ -37,7 +38,7 @@ class NoteEntry extends Component {
                             }
                             {this.props.readOnly &&
                                 <List.Item as='a' onClick={this.onDel}>
-                                    <Icon name='trash outline' inverted color='grey' />
+                                    <Icon name='trash' inverted color='grey' />
                                     Delete
                             </List.Item>
                             }

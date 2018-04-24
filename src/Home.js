@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import { List, Header, Container, Card, Image, Icon, Form, Button } from 'semantic-ui-react'
-import Dropzone from 'react-dropzone'
+import { Link } from 'react-router-dom';
+import { List, Header, Container, Card, Image, Icon, Form, Button } from 'semantic-ui-react';
+import Dropzone from 'react-dropzone';
+import Dexie from 'dexie';
 
 import Duration from './components/Duration';
 import db from './db';
@@ -25,8 +26,8 @@ class Home extends React.Component {
     }
 
     importNotes = (files) => {
-        db.meta.clear();
-        db.notes.clear();
+        // db.meta.clear();
+        // db.notes.clear();
 
         files.forEach(blb => {
             let reader = new FileReader();
@@ -35,9 +36,9 @@ class Home extends React.Component {
                 db.meta.put(json.meta).then(() => {
                     db.notes.bulkPut(json.notes).then(() => {
                         this.readVideos();
-                    })  
+                    })
                 });
-                
+
             });
             reader.readAsText(blb);
         });
@@ -45,23 +46,41 @@ class Home extends React.Component {
 
     // Handle form submit
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
-    
+
     handleSubmit = () => {
-        console.log(this.state.urlInput)
-        // extra video id from url
+        const id = this.YouTubeGetID(this.state.urlInput);
+        window.location.href = `${window.location}v/${id}`;
+    }
 
-        // go to link
-        // use react-router nav?
+    YouTubeGetID(url) {
+        url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+        return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+    }
 
+    deleteNotes = (id, e) => {
+        e.preventDefault();
+
+        db.transaction('rw', db.meta, db.notes, () => {
+            // Delete notes
+            return db.notes.where("[videoId+time]")
+                .between([id, Dexie.minKey], [id, Dexie.maxKey])
+                .delete().then(count => {
+                    // Delete meta
+                    return db.meta.delete(id);
+                });
+        }).then(() => {
+            this.readVideos();
+        });
     }
 
     render() {
         return (
             <Container>
+                <br/>
                 <Header as='h2' icon textAlign='center'>
                     <Icon name='sticky note outline' circular />
                     <Header.Content>
-                    Note Taker
+                        Note Taker
                     </Header.Content>
                 </Header>
 
@@ -69,16 +88,18 @@ class Home extends React.Component {
                     <Icon name="upload" /> <p>Dropping note files here, or click to select files to upload.</p>
                 </Dropzone>
 
+                <br />
                 <Form onSubmit={this.handleSubmit}>
-                <Form.Group>
-                <Form.Input placeholder='Youtube video link' width={16} 
-                name='urlInput' value={this.state.urlInput} onChange={this.handleChange} required />
-                <Button type='submit'> OK </Button>    
-                </Form.Group>
-                
+                    <Form.Group>
+                        <Form.Input placeholder='Youtube video link' width={16}
+                            name='urlInput' value={this.state.urlInput} onChange={this.handleChange} required />
+                        <Button type='submit' icon labelPosition='right' basic> 
+                            <Icon name='video play'/> Play 
+                        </Button>
+                    </Form.Group>
                 </Form>
 
-                <Link to="/v/YE7VzlLtp-4">need a url to start</Link>
+                {/* <Link to="/v/YE7VzlLtp-4">need a url to start</Link> */}
 
                 <h2>Library</h2>
 
@@ -106,14 +127,21 @@ class Home extends React.Component {
                                                         <Duration seconds={meta.duration} icon={false} />
                                                     </List.Content>
                                                 </List.Item>
+                                            </List>
+                                            <List horizontal>
                                                 <List.Item>
-                                                <Icon name='share alternate' />
+                                                    <Icon name='share alternate' />
                                                     <List.Content>
                                                         <Link to={`n/${meta.videoId}`}>Share</Link>
                                                     </List.Content>
-                                                </List.Item> 
+                                                </List.Item>
+                                                <List.Item as='a' onClick={(e) => this.deleteNotes(meta.videoId, e)}>
+                                                    <Icon name='trash' />
+                                                    <List.Content>
+                                                        Delete
+                                                    </List.Content>
+                                                </List.Item>
                                             </List>
-
                                         </Card.Meta>
                                         {/* <Card.Description>
                                         Matthew is a musician living in Nashville.

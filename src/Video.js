@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Player from 'react-player';
+import { Header, Icon } from 'semantic-ui-react';
 
 import './Video.css';
 import db from './db';
@@ -13,6 +14,7 @@ class Video extends Component {
         // Initial state
         this.state = {
             url: null,
+            meta: null,
             playing: true,
             config: {
                 youtube: {
@@ -91,6 +93,7 @@ class Video extends Component {
             title: meta.title,
             duration: this.player.getDuration()
         });
+        this.setState({meta});
     }
 
     onProgress = () => {
@@ -126,6 +129,16 @@ class Video extends Component {
                 />
                 </div>
 
+                {this.state.meta &&
+                    <Header as='h2' textAlign='center' inverted>
+                            <Header.Content>
+                                {this.state.meta.title}
+                                <Header.Subheader>
+                                    <Icon name='user'/> {this.state.meta.author}
+                                </Header.Subheader>
+                            </Header.Content>
+                        </Header>
+                }
                 {/* <button onClick={this.captureFrame.bind(this)}>Capture Frame</button>
                 <br />
                 {this.state.screenshot &&

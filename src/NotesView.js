@@ -1,5 +1,5 @@
 import React from 'react';
-import { Item, Icon, Container, Header, Menu } from 'semantic-ui-react';
+import { List, Icon, Container, Header, Menu } from 'semantic-ui-react';
 import Dexie from 'dexie';
 import html2pdf from 'html2pdf.js';
 
@@ -44,8 +44,8 @@ class NotesView extends React.Component {
     toPDF = () => {
         html2pdf(document.querySelector('.ui.text.container'), {
             filename: `${this.state.meta.title}.pdf`,
-            html2canvas: {dpi: 300, useCORS: true},
-            jsPDF: {unit: 'pt', format: 'letter', orientation: 'portrait'}
+            html2canvas: { dpi: 300, useCORS: true },
+            jsPDF: { unit: 'pt', format: 'letter', orientation: 'portrait' }
         })
     }
 
@@ -61,7 +61,7 @@ class NotesView extends React.Component {
                 notes: this.state.notes
             };
             // Download JSON
-            const blob = new Blob([JSON.stringify(content)], {type: 'application/json;charset=utf-8'});
+            const blob = new Blob([JSON.stringify(content)], { type: 'application/json;charset=utf-8' });
             FileSaver.saveAs(blob, `${this.state.meta.title}.json`);
         });
     }
@@ -113,21 +113,37 @@ class NotesView extends React.Component {
                     </Menu.Item>
                 </Menu>
 
-            <Container text>
-                <br/>
-                {this.state.meta && (
-                    <Header as='h2' textAlign='center'>
-                        <Header.Content>
-                        {this.state.meta.title}
-                        <Header.Subheader>
-                            {this.state.meta.author}
-                        </Header.Subheader>
-                        </Header.Content>
-                    </Header>
+                <Container text>
+                    <br />
+                    {this.state.meta && (
+                        <Header as='h2' textAlign='center'>
+                            <Header.Content>
+                                {this.state.meta.title}
+                                <Header.Subheader>
+                                    {this.state.meta.author}
+                                </Header.Subheader>
+                            </Header.Content>
+                        </Header>
                     )
-                }
-                
-                <Item.Group divided>
+                    }
+
+                    <List divided relaxed>
+                        {this.state.notes.map(note => {
+                            return (
+                                <List.Item>
+                                    <List.Icon name='time' color='grey'/>
+                                    <List.Content>
+                                        <List.Header><Duration seconds={note.time} icon={false} asHeading={true}/></List.Header>
+                                        <List.Description>
+                                            <RichText readOnly={true} value={note.content} />
+                                        </List.Description>
+                                    </List.Content>
+                                </List.Item>
+                            )
+                        })}
+                    </List>
+
+                    {/* <Item.Group divided>
                     {this.state.notes.map(note => {
                         return (
                             <Item>
@@ -145,8 +161,8 @@ class NotesView extends React.Component {
                             </Item>
                         )
                     })}
-                </Item.Group>
-            </Container>
+                </Item.Group> */}
+                </Container>
             </div>
         )
     }
