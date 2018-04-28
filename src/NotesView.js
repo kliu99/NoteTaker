@@ -77,13 +77,15 @@ class NotesView extends React.Component {
     }
 
     render() {
+        const baseUrl = window.location.origin + window.location.pathname
+
         return (
             <div>
                 <Menu text attached='top'>
                     <Menu.Item header>Note Taker</Menu.Item>
                     <Menu.Item
                         name="library"
-                        href='/'
+                        href={baseUrl}
                     >
                         <Icon name='grid layout' /> Library
                     </Menu.Item>

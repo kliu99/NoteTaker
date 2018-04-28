@@ -68,13 +68,14 @@ class NoteList extends Component {
 
     render() {
         const eventHub = this.props.glEventHub;
+        const baseUrl = window.location.origin + window.location.pathname
         return (
             <div className="panel">
             <Menu inverted text color='black' attached='top'>
                     <Menu.Item header>Note Taker</Menu.Item>
                     <Menu.Item
                         name="library"
-                        href='/'
+                        href={`${baseUrl}`}
                     >
                         <Icon name='grid layout' /> Library
                     </Menu.Item>
@@ -89,7 +90,7 @@ class NoteList extends Component {
 
                     <Menu.Item
                         name='share'
-                        href={`/#/n/${this.props.id}`}
+                        href={`${baseUrl}#/n/${this.props.id}`}
                         target='_blank'
                     >
                         <Icon name='share alternate' /> Share
