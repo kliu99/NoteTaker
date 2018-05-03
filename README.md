@@ -19,7 +19,7 @@ To use the app, you will need to install a chrome extension:
 The extension will become active when the user is in the Udacity's classroom page `https://classroom.udacity.com/courses/.*/lessons/`.
 
 ### Using Web App
-You can also use the app without installing the chrome extension by visiting `https://kliu99.github.io/NoteTaker/`.
+You can also use the app without installing the chrome extension by visiting [https://kliu99.github.io/NoteTaker/](https://kliu99.github.io/NoteTaker/).
 
 ### Sample note
 You can import a sample note located in the `documents/Big_Buck_Bunny.json`
