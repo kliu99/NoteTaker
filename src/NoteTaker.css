@@ -1,0 +1,7 @@
+body {
+    color: white;
+}
+
+body .lm_content{
+    overflow-y: auto;
+}
