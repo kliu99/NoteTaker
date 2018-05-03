@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Note Taker",
+  "description": "This is an extension to take notes on MOOC",
+  "version": "1.0",
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "page_action": {
+    "default_icon": "icon.png",
+    "default_title": "Take note"
+  },
+
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }],
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage"
+  ]
+}
