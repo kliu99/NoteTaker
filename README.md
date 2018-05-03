@@ -19,12 +19,19 @@ To use the app, you will need to install a chrome extension:
 The extension will become active when the user is in the Udacity's classroom page `https://classroom.udacity.com/courses/.*/lessons/`.
 
 ### Using Web App
-You can also use the app without install the chrome extension by visiting `https://kliu99.github.io/NoteTaker`.
+You can also use the app without installing the chrome extension by visiting `https://kliu99.github.io/NoteTaker/`.
 
+### Sample note
+You can import a sample note located in the `documents/Big_Buck_Bunny.json`
+
+### Data
 All your data are stored locally on your machine. You can download the note as `json` file to store and share.
 
 
-## Libraries
+
+## Development
+
+### Libraries
 
 - [React](https://reactjs.org/) -- a popular MVC JavaScript library developed and maintained by Facebook.
 - [GoldenLayout](https://golden-layout.com/) -- a layout management library developed and maintained by deepstreamHub GmbH.
@@ -38,7 +45,6 @@ All your data are stored locally on your machine. You can download the note as `
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-
-## Some useful scripts
+### Some useful scripts
 - For local deployment `npm run start`
 - To build `npm run build --prod`
